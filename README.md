@@ -4,11 +4,12 @@ Using T3 Stack for the first time!
 
 Functionalities:
 
-- [ ] Home
+- [x] Home
   - [ ] Landing page style (maybe)
+  - [ ] PWA Install Prompt
 - [ ] Bank
-  - [ ] Balance
-  - [ ] Transfer
+  - [x] Balance
+  - [x] Transfer
   - [ ] Details
 - [ ] Upload Files
 - [ ] Posts/News
@@ -28,8 +29,8 @@ Functionalities:
   - [ ] Voting
     - [ ] Add vote counts
 - [ ] PWA
+  - [ ] Config (Service Worker & Manifest)
   - [ ] Push notifications
-  - [ ] "Install PWA" Prompt
 
 TODOs:
 
