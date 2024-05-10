@@ -10,6 +10,8 @@ import { insertTransaction, type Transaction } from '../queries'
 import { useRef, useState } from 'react'
 import ErrorPrompt from '@/app/_components/ErrorPrompt'
 import { type User } from '@supabase/supabase-js'
+import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 export default function TransferForm({ user }: { user: User }) {
   const [loading, setLoading] = useState(false)
@@ -42,11 +44,14 @@ export default function TransferForm({ user }: { user: User }) {
                 amount: parseInt(formData.get('amount')! as string),
                 notes: formData.get('notes') as string,
               }
+              console.log(data)
               const { error } = await insertTransaction(data)
               if (error) {
                 setError(error.message)
                 setLoading(false)
                 formRef.current?.reset()
+              } else {
+                redirect('/bank')
               }
             }}
             className='grid grid-cols-6 justify-between items-center gap-5'
