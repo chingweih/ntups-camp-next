@@ -15,7 +15,6 @@ import { RefreshCcw } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getTransactions, getUserBalance } from './bank-data'
-
 export default async function Bank() {
   const { user } = await useAuth()
 
