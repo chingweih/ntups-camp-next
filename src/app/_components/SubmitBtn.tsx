@@ -3,11 +3,18 @@
 import { useFormStatus } from 'react-dom'
 import Spinner from './LoadingSpinner'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
-export default function SubmitBtn({ name }: { name: string }) {
+export default function SubmitBtn({
+  name,
+  className,
+}: {
+  name: string
+  className?: string
+}) {
   const { pending } = useFormStatus()
   return (
-    <div className='w-full'>
+    <div className={cn('w-full', className)}>
       <Button
         className='w-full'
         type='submit'

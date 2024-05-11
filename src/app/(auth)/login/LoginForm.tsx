@@ -1,5 +1,6 @@
 'use client'
 
+import SubmitBtn from '@/app/_components/SubmitBtn'
 import {
   Card,
   CardContent,
@@ -9,17 +10,16 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@radix-ui/react-label'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle } from 'lucide-react'
-import { useState } from 'react'
-import SubmitBtn from '@/app/_components/SubmitBtn'
+import { useRef } from 'react'
+import { toast } from 'sonner'
 
 export default function LoginForm({
   login,
 }: {
   login: (formData: FormData) => Promise<string | null>
 }) {
-  const [error, setError] = useState<string | null>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  toast.dismiss('login-error')
 
   return (
     <div className='mt-10'>
@@ -29,20 +29,13 @@ export default function LoginForm({
           <CardDescription>使用提供的帳號登入</CardDescription>
         </CardHeader>
         <CardContent>
-          {error && (
-            <Alert variant='destructive' className='mb-4'>
-              <AlertCircle className='h-4 w-4' />
-              <AlertTitle>錯誤</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
           <form
+            ref={formRef}
             action={async (formData) => {
-              setError(null)
-
               const error = await login(formData)
               if (error) {
-                setError(error)
+                toast.error(error, { id: 'login-error' })
+                formRef.current?.reset()
               }
             }}
           >

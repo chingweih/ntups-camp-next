@@ -1,22 +1,20 @@
 'use client'
 
+import SubmitBtn from '@/app/_components/SubmitBtn'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { type User } from '@supabase/supabase-js'
 import { RefreshCcw } from 'lucide-react'
 import Link from 'next/link'
-import { insertTransaction, type Transaction } from '../queries'
 import { useRef, useState } from 'react'
-import ErrorPrompt from '@/app/_components/ErrorPrompt'
-import { type User } from '@supabase/supabase-js'
-import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { toast } from 'sonner'
+import { insertTransaction, type Transaction } from '../queries'
 
 export default function TransferForm({ user }: { user: User }) {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
+  toast.dismiss('transfer-error')
 
   if (!user?.email) {
     return null
@@ -24,7 +22,6 @@ export default function TransferForm({ user }: { user: User }) {
 
   return (
     <>
-      <ErrorPrompt error={error} />
       <Card>
         <CardHeader>
           <CardTitle className='flex flex-row gap-3'>
@@ -36,22 +33,18 @@ export default function TransferForm({ user }: { user: User }) {
           <form
             ref={formRef}
             action={async (formData: FormData) => {
-              setLoading(true)
-              setError('')
               const data: Transaction = {
                 from_email: user.email! as string,
                 to_email: formData.get('to_email')! as string,
                 amount: parseInt(formData.get('amount')! as string),
                 notes: formData.get('notes') as string,
               }
-              console.log(data)
               const { error } = await insertTransaction(data)
               if (error) {
-                setError(error.message)
-                setLoading(false)
+                toast.error(error.message, {
+                  id: 'transfer-error',
+                })
                 formRef.current?.reset()
-              } else {
-                redirect('/bank')
               }
             }}
             className='grid grid-cols-6 justify-between items-center gap-5'
@@ -90,9 +83,7 @@ export default function TransferForm({ user }: { user: User }) {
             <Button asChild variant='link' className='col-span-3'>
               <Link href='/bank'>取消</Link>
             </Button>
-            <Button type='submit' className='col-span-3' disabled={loading}>
-              確定
-            </Button>
+            <SubmitBtn name='確定' className='col-span-3' />
           </form>
         </CardContent>
       </Card>

@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 export type Transaction = {
   from_email: string
@@ -26,6 +27,7 @@ export async function insertTransaction({
 
   if (!error) {
     revalidatePath('/bank')
+    redirect('/bank')
   }
 
   return { error }

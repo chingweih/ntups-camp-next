@@ -5,6 +5,7 @@ import title from '../assets/title.png'
 
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
+import { Toaster } from '@/components/ui/sonner'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -45,6 +46,7 @@ export default function RootLayout({
           </div>
           {children}
         </div>
+        <Toaster />
       </body>
     </html>
   )
