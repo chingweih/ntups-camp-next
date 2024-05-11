@@ -34,13 +34,14 @@ Functionalities:
 
 TODOs:
 
-- [ ] Deploy to **Vercel**
-- [ ] UI & Pages
-  - [ ] Shadcn/ui
-- [ ] Tidy Build Process
-- [ ] Set up Database (**Supabase** postgres)
+- [x] Deploy to **Vercel**
+- [x] UI & Pages
+  - [x] Shadcn/ui
+- [x] Tidy Build Process
+- [x] Set up Database (**Supabase** postgres)
   - [ ] Tables
-- [ ] Set up Auth (Try **Clerk**, or supabase)
+- [x] Set up Auth (Try **Clerk**, or supabase)
 - [ ] Set up Storage (Try **uploadthing**)
 - [ ] Postgres RLS on supabase
-- [ ] Some server-side actions (prob many)
+- [ ] Some server-side actions (prob many, supabase admin)
+- [ ] Supabase CLI Generate DB Types
