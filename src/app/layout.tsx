@@ -29,8 +29,8 @@ export default function RootLayout({
         style={{ backgroundColor: '#fffefc' }}
       >
         <div className='mx-auto w-full max-w-md'>
-          <div className='flex flex-row items-center justify-center m-10'>
-            <Image src={title} alt='憲政熱映中' />
+          <div className='flex flex-row items-center justify-center m-2'>
+            <Image src={title} alt='憲政熱映中' height={50} />
           </div>
           {children}
         </div>

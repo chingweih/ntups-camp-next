@@ -12,6 +12,7 @@ import { Label } from '@radix-ui/react-label'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { useState } from 'react'
+import Spinner from '@/app/_components/LoadingSpinner'
 
 export default function LoginForm({
   login,
@@ -22,7 +23,7 @@ export default function LoginForm({
   const [loading, setLoading] = useState<boolean>(false)
 
   return (
-    <>
+    <div className='mt-10'>
       <Card>
         <CardHeader>
           <CardTitle>登入</CardTitle>
@@ -63,12 +64,18 @@ export default function LoginForm({
                 <Input id='password' name='password' required type='password' />
               </div>
               <Button className='w-full' type='submit' disabled={loading}>
-                登入
+                {loading ? (
+                  <>
+                    <Spinner /> 載入中
+                  </>
+                ) : (
+                  '登入'
+                )}
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
-    </>
+    </div>
   )
 }
