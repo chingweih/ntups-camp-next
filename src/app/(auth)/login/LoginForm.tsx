@@ -57,11 +57,22 @@ export default function LoginForm({
                   placeholder='your.account'
                   required
                   type='text'
+                  autoCorrect='off'
+                  autoCapitalize='none'
+                  autoComplete='off'
                 />
               </div>
               <div className='space-y-2'>
                 <Label htmlFor='password'>密碼</Label>
-                <Input id='password' name='password' required type='password' />
+                <Input
+                  id='password'
+                  name='password'
+                  required
+                  type='password'
+                  autoCorrect='off'
+                  autoCapitalize='none'
+                  autoComplete='off'
+                />
               </div>
               <Button className='w-full' type='submit' disabled={loading}>
                 {loading ? (
