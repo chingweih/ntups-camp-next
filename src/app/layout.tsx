@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     default: '憲政熱映中｜臺大政治營',
   },
   description: 'July 15-19｜2024 模擬選戰',
+  manifest: '/manifest.json',
 }
 
 export const viewport: Viewport = {
@@ -21,6 +22,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   minimumScale: 1,
   userScalable: false,
+  themeColor: '#528eca',
 }
 
 export default function RootLayout({
