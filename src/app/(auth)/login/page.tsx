@@ -3,7 +3,7 @@ import LoginForm from './LoginForm'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '登入｜臺大政治營',
+  title: '登入',
   description: '使用提供的帳號登入',
 }
 

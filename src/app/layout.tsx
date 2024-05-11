@@ -1,17 +1,26 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import title from '../assets/title.png'
 
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
-import UserHeader from './_components/UserHeader'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
-  title: '憲政熱映中｜臺大政治營',
+  title: {
+    template: '%s | 臺大政治營',
+    default: '憲政熱映中｜臺大政治營',
+  },
   description: 'July 15-19｜2024 模擬選戰',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  minimumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
