@@ -28,7 +28,7 @@ jobs:
           if [ ! -f supabase/config.toml ]; then
             supabase init && supabase start
           fi
-          supabase login --api-key ${SUPABASE_ACCESS_TOKEN}
+          supabase login --token ${SUPABASE_ACCESS_TOKEN}
           supabase link --project-ref ${SUPABASE_REF_ID} --password ${DB_PASSWORD}
           supabase gen types typescript --project-id ${SUPABASE_REF_ID} > ${OUTPUT_PATH}
       - name: Check for file changes & commit files
