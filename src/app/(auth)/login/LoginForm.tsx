@@ -1,5 +1,5 @@
 'use client'
-import { Button } from '@/components/ui/button'
+
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import { Label } from '@radix-ui/react-label'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle } from 'lucide-react'
 import { useState } from 'react'
-import Spinner from '@/app/_components/LoadingSpinner'
+import SubmitBtn from '@/app/_components/SubmitBtn'
 
 export default function LoginForm({
   login,
@@ -20,7 +20,6 @@ export default function LoginForm({
   login: (formData: FormData) => Promise<string | null>
 }) {
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
 
   return (
     <div className='mt-10'>
@@ -40,12 +39,11 @@ export default function LoginForm({
           <form
             action={async (formData) => {
               setError(null)
-              setLoading(true)
+
               const error = await login(formData)
               if (error) {
                 setError(error)
               }
-              setLoading(false)
             }}
           >
             <div className='space-y-4'>
@@ -74,15 +72,7 @@ export default function LoginForm({
                   autoComplete='off'
                 />
               </div>
-              <Button className='w-full' type='submit' disabled={loading}>
-                {loading ? (
-                  <>
-                    <Spinner /> 載入中
-                  </>
-                ) : (
-                  '登入'
-                )}
-              </Button>
+              <SubmitBtn name='登入' />
             </div>
           </form>
         </CardContent>
