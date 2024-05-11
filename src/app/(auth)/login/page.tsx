@@ -1,6 +1,5 @@
-import { login } from '../actions'
-import LoginForm from './LoginForm'
 import type { Metadata } from 'next'
+import LoginPage from './LoginPage'
 
 export const metadata: Metadata = {
   title: '登入',
@@ -8,5 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function Login() {
-  return <LoginForm login={login} />
+  return <LoginPage />
 }

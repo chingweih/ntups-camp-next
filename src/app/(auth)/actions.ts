@@ -5,10 +5,8 @@ import { redirect } from 'next/navigation'
 
 import { createClient } from '@/utils/supabase/server'
 
-export async function login(formData: FormData) {
+export async function login(formData: FormData, next?: string | null) {
   const supabase = createClient()
-
-  console.log(formData.get('email'))
 
   const data = {
     email: `${formData.get('email') as string}@${process.env.ACCOUNT_DOMAIN}`,
@@ -21,6 +19,8 @@ export async function login(formData: FormData) {
     return error.message
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+  const nextPath = next ? next : '/'
+
+  revalidatePath(nextPath, 'layout')
+  redirect(nextPath)
 }

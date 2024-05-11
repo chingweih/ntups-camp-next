@@ -19,7 +19,7 @@ export default async function Bank() {
   const { user } = await useAuth()
 
   if (!user?.email) {
-    redirect('/login')
+    redirect('/login?next=/bank')
   }
 
   const transactions = await getTransactions(user)
