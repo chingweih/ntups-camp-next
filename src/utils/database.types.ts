@@ -55,26 +55,35 @@ export type Database = {
         Row: {
           balance: number
           created_at: string
+          display_name: string | null
           email: string
           id: string
           is_admin: boolean
+          profile_picture_url: string | null
           role: Database["public"]["Enums"]["user_role"] | null
+          verified: boolean
         }
         Insert: {
           balance?: number
           created_at?: string
+          display_name?: string | null
           email: string
           id: string
           is_admin?: boolean
+          profile_picture_url?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          verified?: boolean
         }
         Update: {
           balance?: number
           created_at?: string
+          display_name?: string | null
           email?: string
           id?: string
           is_admin?: boolean
+          profile_picture_url?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
+          verified?: boolean
         }
         Relationships: [
           {
