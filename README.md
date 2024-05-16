@@ -41,6 +41,7 @@ Expected Functionalities:
 TODOs:
 
 - [x] Deploy to **Vercel**
+  - [ ] May switch to **Cloudflare Page** when done
 - [x] UI & Pages
   - [x] Shadcn/UI
 - [x] Tidy build process (ignore eslint on build)
@@ -56,3 +57,6 @@ TODOs:
 - [ ] Postgres RLS on supabase
 - [ ] Supabase CLI: Generate db types
   - [ ] Github Action automation
+- [ ] Dev Tools (Maybe)
+  - [ ] Sentry for error management
+  - [ ] PostHog analytics
