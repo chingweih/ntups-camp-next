@@ -1,11 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/utils/auth'
+import { getUser } from '@/utils/auth'
 import Link from 'next/link'
 import UserGreeting from './UserGreeting'
 
 export default async function UserHeader() {
-  const { user } = await useAuth()
+  const user = await getUser()
 
   return (
     <>

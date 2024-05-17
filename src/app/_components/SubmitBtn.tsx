@@ -23,7 +23,7 @@ export default function SubmitBtn({
       >
         {pending ? (
           <div className='flex items-center justify-center gap-3'>
-            <Spinner /> 載入中⋯⋯
+            <Spinner /> 載入中⋯
           </div>
         ) : (
           name

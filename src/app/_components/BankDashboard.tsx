@@ -6,28 +6,18 @@ import {
 } from '@/components/ui/card'
 import { Activity, DollarSign } from 'lucide-react'
 import { currencyFormatter, currencyFormatterWithSign } from '@/lib/formatters'
-import { createClient } from '@/utils/supabase/server'
-import { useAuth } from '@/utils/auth'
-import { getTransactions, getUserBalance } from '../(main)/bank/bank-data'
+import { getUser } from '@/utils/auth'
+import { getTransactions, getUserBalance } from '../(main)/bank/bank-quries'
 
 export async function BankDashboard() {
-  const { user } = await useAuth()
+  const user = await getUser()
 
   if (!user?.email) {
     return null
   }
 
-  const balance = await getUserBalance(user)
-
-  if (!balance) {
-    return null
-  }
-
+  const balance = (await getUserBalance(user)) || 0
   const transactions = await getTransactions(user)
-
-  if (!transactions) {
-    return null
-  }
 
   return (
     <div className='flex flex-row w-full gap-4 mb-5'>
@@ -48,10 +38,16 @@ export async function BankDashboard() {
           </CardDescription>
           <CardTitle
             className={
-              transactions[0].amount > 0 ? 'text-red-500' : 'text-green-500'
+              transactions
+                ? transactions[0].amount > 0
+                  ? 'text-red-500'
+                  : 'text-green-500'
+                : ''
             }
           >
-            {currencyFormatterWithSign.format(transactions[0].amount)}
+            {transactions
+              ? currencyFormatterWithSign.format(transactions[0].amount)
+              : '--'}
           </CardTitle>
         </CardHeader>
       </Card>

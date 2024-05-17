@@ -6,6 +6,8 @@ import title from '../assets/title.png'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { Toaster } from '@/components/ui/sonner'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import Navigation from './_components/Navigation'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -44,6 +46,8 @@ export default function RootLayout({
           <div className='flex flex-row items-center justify-center m-2'>
             <Image src={title} alt='憲政熱映中' height={50} />
           </div>
+          <SpeedInsights />
+          <Navigation />
           {children}
         </div>
         <Toaster />

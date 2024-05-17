@@ -1,6 +1,13 @@
 import { createClient } from '@/utils/supabase/server'
 import { type User } from '@supabase/supabase-js'
 
+export type Transaction = {
+  timestamp: string
+  to_from: string
+  amount: number
+  notes?: string
+}
+
 export async function getUserBalance(user: User) {
   if (!user?.email) {
     return null
@@ -21,16 +28,11 @@ export async function getUserBalance(user: User) {
   return userData.balance
 }
 
-export async function getTransactions(user: User) {
+export async function getTransactions(
+  user: User
+): Promise<Transaction[] | null> {
   if (!user?.email) {
     return null
-  }
-
-  type Transaction = {
-    timestamp: string
-    to_from: string
-    amount: number
-    notes?: string
   }
 
   const supabase = createClient()
@@ -75,6 +77,10 @@ export async function getTransactions(user: User) {
   transactions.sort(
     (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   )
+
+  if (transactions.length === 0) {
+    return null
+  }
 
   return transactions
 }

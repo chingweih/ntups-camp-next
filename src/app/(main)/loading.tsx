@@ -4,7 +4,7 @@ export function LoadingComp() {
   return (
     <div className='flex items-center justify-center gap-5 h-40'>
       <Spinner />
-      <p className='text-center'>Loading...</p>
+      <p className='text-center'>努力拉票中⋯</p>
     </div>
   )
 }
