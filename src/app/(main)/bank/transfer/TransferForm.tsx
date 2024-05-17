@@ -10,7 +10,7 @@ import { RefreshCcw } from 'lucide-react'
 import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { insertTransaction, type Transaction } from '../queries'
+import { insertTransaction, type Transaction } from '../actions'
 
 export default function TransferForm({ user }: { user: User }) {
   const formRef = useRef<HTMLFormElement>(null)
@@ -35,13 +35,13 @@ export default function TransferForm({ user }: { user: User }) {
             action={async (formData: FormData) => {
               const data: Transaction = {
                 from_email: user.email! as string,
-                to_email: formData.get('to_email')! as string,
+                to_email: (formData.get('to_email')! as string).toLowerCase(),
                 amount: parseInt(formData.get('amount')! as string),
                 notes: formData.get('notes') as string,
               }
-              const { error } = await insertTransaction(data)
+              const { error } = await insertTransaction(data, user)
               if (error) {
-                toast.error(error.message, {
+                toast.error(error, {
                   id: 'transfer-error',
                 })
                 formRef.current?.reset()
@@ -69,10 +69,14 @@ export default function TransferForm({ user }: { user: User }) {
               className='col-span-4'
               required
               name='to_email'
+              autoCorrect='off'
+              autoCapitalize='none'
+              autoComplete='off'
             ></Input>
             <Label className='col-span-2'>金額</Label>
             <Input
               type='number'
+              inputMode='numeric'
               className='col-span-4'
               required
               name='amount'

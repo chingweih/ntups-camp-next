@@ -10,7 +10,7 @@ export default async function Bank() {
   const user = await getUser()
 
   if (!user?.email) {
-    redirect('/login?next=/bank')
+    redirect(`/login?next=${encodeURI('/bank')}`)
   }
 
   const transactions = await getTransactions(user)

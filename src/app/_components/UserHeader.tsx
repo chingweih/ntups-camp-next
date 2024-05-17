@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button'
 import { getUser } from '@/utils/auth'
 import Link from 'next/link'
 import UserGreeting from './UserGreeting'
+import { getUserDisplayName } from '../(main)/user-data'
 
 export default async function UserHeader() {
   const user = await getUser()
+  const userDisplayName = await getUserDisplayName(user)
 
   return (
     <>
@@ -17,10 +19,11 @@ export default async function UserHeader() {
               alt={user?.email ? user.email.split('@')[0] : '?'}
             />
             <AvatarFallback>
-              {user?.email ? user.email[0].toUpperCase() : '?'}
+              {(userDisplayName ? userDisplayName[0] : null) ||
+                (user?.email ? user.email[0].toUpperCase() : '?')}
             </AvatarFallback>
           </Avatar>
-          <UserGreeting user={user} />
+          <UserGreeting user={user} displayName={userDisplayName} />
         </div>
         <Button variant='link' asChild>
           {user ? (

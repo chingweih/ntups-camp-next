@@ -1,9 +1,23 @@
 'use client'
 import { type User } from '@supabase/supabase-js'
 
-export default function UserGreeting({ user }: { user: User | null }) {
+export default function UserGreeting({
+  user,
+  displayName,
+}: {
+  user: User | null
+  displayName: string | null
+}) {
   const now = new Date()
   const hour = now.getHours()
+
+  const userName =
+    displayName ||
+    (user?.email
+      ? `${user.email.split('@')[0][0].toUpperCase()}${user.email
+          .split('@')[0]
+          .slice(1)}`
+      : '')
 
   const greeting = (hour: number) => {
     if (hour < 12 && hour >= 6) {
@@ -15,13 +29,5 @@ export default function UserGreeting({ user }: { user: User | null }) {
     }
   }
 
-  return (
-    <h1>
-      {user?.email
-        ? `${greeting(hour)}，${user.email
-            .split('@')[0][0]
-            .toUpperCase()}${user.email.split('@')[0].slice(1)}`
-        : '請登入'}
-    </h1>
-  )
+  return <h1>{user?.email ? `${greeting(hour)}，${userName}` : '請登入'}</h1>
 }

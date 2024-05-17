@@ -47,12 +47,12 @@ TODOs:
 - [x] Tidy build process (ignore eslint on build)
 - [x] Set up database (**Supabase** Postgres)
 - [x] Set up Auth (**Supabase** Auth)
-- [ ] Tidy things up
-  - [ ] Check supabase auth call (should all be server client)
-  - [ ] Tidy up file location (rule: in related path folder)
-  - [ ] Magic files: loading, not-found and /error
-  - [ ] Change supabase env to not be exposed
-  - [ ] Add 2nd layer of verification to db query calls (e.g. `user.email == from_email`, etc..)
+- [x] Tidy things up
+  - [x] Check supabase auth call (should all be server client)
+  - [x] Tidy up file location (rule: in related path folder)
+  - [x] Magic files: loading, not-found and /error
+  - [x] Change supabase env to not be exposed
+  - [x] Add 2nd layer of verification to db query calls (e.g. `user.email == from_email`, etc..)
 - [ ] Set up Storage (**Supabase** Storage)
 - [ ] Postgres RLS on supabase
 - [ ] Supabase CLI: Generate db types

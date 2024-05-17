@@ -10,6 +10,9 @@ import {
 } from '@/app/_components/TableNotes'
 import { currencyFormatterWithSign } from '@/lib/formatters'
 import { type Transaction } from '../(main)/bank/bank-quries'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import React from 'react'
 
 export function TransactionTable({
   transactions,
@@ -36,7 +39,7 @@ export function TransactionTable({
       <TableBody>
         {transactions ? (
           transactions.map((transaction) => (
-            <>
+            <React.Fragment key={transaction.timestamp}>
               <TableRow className={transaction.notes ? '' : 'border-b'}>
                 <TableCell className='font-medium'>
                   {new Date(transaction.timestamp).toLocaleTimeString('en-US', {
@@ -69,13 +72,18 @@ export function TransactionTable({
                   </TableCellSm>
                 </TableRow>
               ) : null}
-            </>
+            </React.Fragment>
           ))
         ) : (
           <TableRow>
-            <TableCell>--</TableCell>
-            <TableCell>--</TableCell>
-            <TableCell>--</TableCell>
+            <TableCell colSpan={3} className='text-center text-slate-700'>
+              尚未有轉帳資料，
+              <Button asChild variant='link' className='p-0 m-0 h-auto'>
+                <Link href='/bank/transfer' className='decoration-underline'>
+                  立即轉帳
+                </Link>
+              </Button>
+            </TableCell>
           </TableRow>
         )}
       </TableBody>

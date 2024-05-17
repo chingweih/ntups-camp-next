@@ -1,14 +1,5 @@
-import Spinner from '../_components/LoadingSpinner'
-
-export function LoadingComp() {
-  return (
-    <div className='flex items-center justify-center gap-5 h-40'>
-      <Spinner />
-      <p className='text-center'>努力拉票中⋯</p>
-    </div>
-  )
-}
+import PageLoading from '../_components/PageLoading'
 
 export default function Loading() {
-  return <LoadingComp />
+  return <PageLoading />
 }
