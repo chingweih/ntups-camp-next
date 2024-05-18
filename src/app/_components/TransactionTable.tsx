@@ -14,17 +14,28 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
+function getDateString(timestamp?: string) {
+  const options = {
+    month: '2-digit' as const,
+    day: '2-digit' as const,
+    hour: '2-digit' as const,
+    minute: '2-digit' as const,
+    timeZone: 'Asia/Taipei',
+  }
+
+  const locale = 'en-US'
+
+  return timestamp
+    ? new Date(timestamp).toLocaleTimeString(locale, options)
+    : new Date().toLocaleTimeString(locale, options)
+}
+
 export function TransactionTable({
   transactions,
 }: {
   transactions: Transaction[] | null
 }) {
-  const lastUpdate = new Date().toLocaleTimeString('en-US', {
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  const lastUpdate = getDateString()
 
   return (
     <Table>
@@ -38,55 +49,61 @@ export function TransactionTable({
       </TableHeader>
       <TableBody>
         {transactions ? (
-          transactions.map((transaction) => (
-            <React.Fragment key={transaction.timestamp}>
-              <TableRow className={transaction.notes ? '' : 'border-b'}>
-                <TableCell className='font-medium'>
-                  {new Date(transaction.timestamp).toLocaleTimeString('en-US', {
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </TableCell>
-                <TableCell>
-                  {transaction.to_from[0].toUpperCase() +
-                    transaction.to_from.split('@')[0].slice(1)}
-                </TableCell>
-                <TableCell
-                  className={
-                    'text-right ' +
-                    (transaction.amount > 0 ? 'text-red-500' : 'text-green-500')
-                  }
-                >
-                  {currencyFormatterWithSign.format(transaction.amount)}
-                </TableCell>
-              </TableRow>
-              {transaction.notes ? (
-                <TableRow className='border-b'>
-                  <TableCellSm
-                    colSpan={3}
-                    className='text-right text-slate-400'
-                  >
-                    {transaction.notes}
-                  </TableCellSm>
-                </TableRow>
-              ) : null}
-            </React.Fragment>
-          ))
+          <TransactionRow transactions={transactions} />
         ) : (
-          <TableRow>
-            <TableCell colSpan={3} className='text-center text-slate-700'>
-              尚未有轉帳資料，
-              <Button asChild variant='link' className='p-0 m-0 h-auto'>
-                <Link href='/bank/transfer' className='decoration-underline'>
-                  立即轉帳
-                </Link>
-              </Button>
-            </TableCell>
-          </TableRow>
+          <NoDataRow />
         )}
       </TableBody>
     </Table>
+  )
+}
+
+function TransactionRow({ transactions }: { transactions: Transaction[] }) {
+  return transactions.map((transaction) => (
+    <React.Fragment key={transaction.timestamp}>
+      <TableRow className={transaction.notes ? '' : 'border-b'}>
+        <TableCell className='font-medium'>
+          {getDateString(transaction.timestamp)}
+        </TableCell>
+        <TableCell>
+          {transaction.to_from[0].toUpperCase() +
+            transaction.to_from.split('@')[0].slice(1)}
+        </TableCell>
+        <TableCell
+          className={
+            'text-right ' +
+            (transaction.amount > 0 ? 'text-red-500' : 'text-green-500')
+          }
+        >
+          {currencyFormatterWithSign.format(transaction.amount)}
+        </TableCell>
+      </TableRow>
+      <NotesRow notes={transaction.notes} />
+    </React.Fragment>
+  ))
+}
+
+function NotesRow({ notes }: { notes: string | undefined }) {
+  return notes ? (
+    <TableRow className='border-b'>
+      <TableCellSm colSpan={3} className='text-right text-slate-400'>
+        {notes}
+      </TableCellSm>
+    </TableRow>
+  ) : null
+}
+
+function NoDataRow() {
+  return (
+    <TableRow>
+      <TableCell colSpan={3} className='text-center text-slate-700'>
+        尚未有轉帳資料，
+        <Button asChild variant='link' className='p-0 m-0 h-auto'>
+          <Link href='/bank/transfer' className='decoration-underline'>
+            立即轉帳
+          </Link>
+        </Button>
+      </TableCell>
+    </TableRow>
   )
 }

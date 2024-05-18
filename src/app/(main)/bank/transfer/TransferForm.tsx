@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { type User } from '@supabase/supabase-js'
 import { RefreshCcw } from 'lucide-react'
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { toast } from 'sonner'
 import { insertTransaction, type Transaction } from '../actions'
 
@@ -39,7 +39,7 @@ export default function TransferForm({ user }: { user: User }) {
                 amount: parseInt(formData.get('amount')! as string),
                 notes: formData.get('notes') as string,
               }
-              const { error } = await insertTransaction(data, user)
+              const error = await insertTransaction(data, user)
               if (error) {
                 toast.error(error, {
                   id: 'transfer-error',

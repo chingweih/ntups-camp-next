@@ -19,21 +19,21 @@ export async function insertTransaction(
   user: User
 ) {
   if (amount <= 0) {
-    return { error: '金額必須大於 0' }
+    return '金額必須大於 0'
   }
 
   if (from_email !== user.email) {
-    return { error: '僅能使用自己的帳號進行轉帳' }
+    return '僅能使用自己的帳號進行轉帳'
   }
 
   const userBalance = await getUserBalance(user)
 
   if (!userBalance) {
-    return { error: '無法取得餘額' }
+    return '無法取得餘額'
   }
 
   if (amount > userBalance) {
-    return { error: '餘額不足' }
+    return '餘額不足'
   }
 
   const supabase = createClient()
@@ -44,10 +44,11 @@ export async function insertTransaction(
     notes: notes,
   })
 
-  if (!error) {
+  if (error) {
+    return error.message.toString()
+  } else {
     revalidatePath('/bank')
     redirect('/bank')
+    return null
   }
-
-  return { error: error.message.toString() }
 }
