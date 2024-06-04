@@ -10,7 +10,7 @@ import { getUser } from '@/utils/auth'
 import { getTransactions, getUserBalance } from '../(main)/bank/bank-quries'
 
 export async function BankDashboard() {
-  const user = await getUser()
+  const { user } = await getUser()
 
   if (!user?.email) {
     return null

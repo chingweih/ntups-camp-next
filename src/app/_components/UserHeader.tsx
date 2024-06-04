@@ -3,11 +3,9 @@ import { Button } from '@/components/ui/button'
 import { getUser } from '@/utils/auth'
 import Link from 'next/link'
 import UserGreeting from './UserGreeting'
-import { getUserDisplayName } from '../(main)/user-data'
 
 export default async function UserHeader() {
-  const user = await getUser()
-  const userDisplayName = await getUserDisplayName(user)
+  const { user, displayName: userDisplayName } = await getUser()
 
   return (
     <>

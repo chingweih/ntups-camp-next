@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Transfer() {
-  const user = await getUser()
+  const { user } = await getUser()
 
   if (!user?.email) {
     redirect('/login')

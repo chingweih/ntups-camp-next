@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getTransactions } from './bank-quries'
 export default async function Bank() {
-  const user = await getUser()
+  const { user } = await getUser()
 
   if (!user?.email) {
     redirect(`/login?next=${encodeURI('/bank')}`)
