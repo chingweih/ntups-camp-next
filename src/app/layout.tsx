@@ -44,7 +44,7 @@ export default function RootLayout({
       >
         <div className='mx-auto w-full max-w-md'>
           <div className='flex flex-row items-center justify-center m-2'>
-            <Image src={title} alt='憲政熱映中' height={50} />
+            <Image src={title} alt='憲政熱映中' height={50} priority={true} />
           </div>
           <SpeedInsights />
           <Navigation />
