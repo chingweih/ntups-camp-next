@@ -1,24 +1,41 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useRef } from 'react'
 import uploadFile from '../(main)/upload/action'
+import SubmitBtn from './SubmitBtn'
+import { toast } from 'sonner'
+import { cn } from '@/lib/utils'
 
-export default function UploadButton() {
+export default function UploadButton({ taskId }: { taskId: number }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
+
   return (
-    <form ref={formRef} action={uploadFile}>
-      <Button onClick={() => inputRef.current?.click()}>
-        <UploadIcon />
-        上傳
-      </Button>
+    <form
+      ref={formRef}
+      action={async (formData: FormData) => {
+        const { error } = await uploadFile(formData, taskId)
+        if (error) {
+          toast.error(error)
+        }
+      }}
+    >
+      <SubmitBtn
+        name={
+          <>
+            <UploadIcon className='pr-1' /> 上傳
+          </>
+        }
+        onClick={() => inputRef.current?.click()}
+        submit={false}
+        loadingText='上傳中⋯'
+      />
       <Input
         type='file'
         name='file'
         accept='.pdf'
-        onChange={() => formRef.current?.submit()}
+        onChange={() => formRef.current?.requestSubmit()}
         style={{ display: 'none' }}
         ref={inputRef}
       />
@@ -26,7 +43,7 @@ export default function UploadButton() {
   )
 }
 
-function UploadIcon() {
+function UploadIcon({ className }: { className?: string }) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -34,7 +51,7 @@ function UploadIcon() {
       viewBox='0 0 24 24'
       strokeWidth={1.5}
       stroke='currentColor'
-      className='size-6'
+      className={cn('size-6', className)}
     >
       <path
         strokeLinecap='round'

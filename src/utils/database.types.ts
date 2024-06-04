@@ -75,6 +75,45 @@ export type Database = {
           },
         ]
       }
+      uploads: {
+        Row: {
+          created_at: string
+          file_url: string
+          id: number
+          task_id: number
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          file_url: string
+          id?: number
+          task_id: number
+          user: string
+        }
+        Update: {
+          created_at?: string
+          file_url?: string
+          id?: number
+          task_id?: number
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "uploads_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "uploads_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["email"]
+          },
+        ]
+      }
       users: {
         Row: {
           balance: number

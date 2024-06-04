@@ -4,12 +4,17 @@ import { type User } from '@supabase/supabase-js'
 export async function getUser(): Promise<{
   user: User | null
   displayName: string | null
+  userName: string | null
 }> {
   const supabase = createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  return { user: user, displayName: await getUserDisplayName(user) }
+  return {
+    user: user,
+    displayName: await getUserDisplayName(user),
+    userName: user?.email?.split('@')[0] || null,
+  }
 }
 
 async function getUserDisplayName(user: User | null) {
