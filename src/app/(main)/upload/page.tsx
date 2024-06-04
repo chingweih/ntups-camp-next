@@ -1,3 +1,4 @@
+import UploadButton from '@/app/_components/UploadButton'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -6,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { getUser } from '@/utils/auth'
 import { createClient } from '@/utils/supabase/server'
@@ -58,35 +60,13 @@ async function TaskList() {
               <Label>截止日期：{dueDtString}</Label>
             </CardHeader>
             <CardContent className='pb-0 flex flex-col items-center justify-center gap-1'>
-              <Button>
-                <UploadIcon />
-                上傳
-              </Button>
+              <UploadButton />
               <Label>Max 5MB</Label>
             </CardContent>
           </Card>
         )
       })}
     </div>
-  )
-}
-
-function UploadIcon() {
-  return (
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      fill='none'
-      viewBox='0 0 24 24'
-      strokeWidth={1.5}
-      stroke='currentColor'
-      className='size-6'
-    >
-      <path
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z'
-      />
-    </svg>
   )
 }
 
