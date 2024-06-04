@@ -122,15 +122,16 @@ async function getUploads(taskId: number) {
     .eq('task_id', taskId)
     .eq('user', user.email)
     .order('created_at', { ascending: false })
-    .single()
+    .limit(1)
 
   if (error || !uploads) {
+    console.log(error)
     return null
   }
 
   const { data: fileUrl, error: urlError } = await supabase.storage
     .from('files')
-    .createSignedUrl(uploads.file_url, 3600)
+    .createSignedUrl(uploads[0].file_url, 3600)
 
   if (urlError || !fileUrl) {
     console.log(urlError)
