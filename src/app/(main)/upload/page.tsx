@@ -121,11 +121,10 @@ async function getUploads(taskId: number) {
     .select('file_url')
     .eq('task_id', taskId)
     .eq('user', user.email)
-    .order('created_at', { ascending: false })
+    .order('id', { ascending: false })
     .limit(1)
 
-  if (error || !uploads) {
-    console.log(error)
+  if (error || !uploads || uploads.length === 0) {
     return null
   }
 
@@ -134,7 +133,6 @@ async function getUploads(taskId: number) {
     .createSignedUrl(uploads[0].file_url, 3600)
 
   if (urlError || !fileUrl) {
-    console.log(urlError)
     return null
   }
 
