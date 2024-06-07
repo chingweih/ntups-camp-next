@@ -27,7 +27,7 @@ export default async function uploadFile(formData: FormData, taskId: number) {
 
   const { error: dbError } = await supabase.from('uploads').insert({
     task_id: taskId,
-    user: user?.email,
+    user_email: user?.email,
     file_url: data.path,
   })
 

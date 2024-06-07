@@ -120,7 +120,7 @@ async function getUploads(taskId: number) {
     .from('uploads')
     .select('file_url')
     .eq('task_id', taskId)
-    .eq('user', user.email)
+    .eq('user_email', user.email)
     .order('id', { ascending: false })
     .limit(1)
 

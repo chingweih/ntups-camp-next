@@ -9,6 +9,33 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      posts: {
+        Row: {
+          contents: string | null
+          created_at: string
+          description: string | null
+          display_time: string | null
+          id: number
+          title: string
+        }
+        Insert: {
+          contents?: string | null
+          created_at?: string
+          description?: string | null
+          display_time?: string | null
+          id?: number
+          title: string
+        }
+        Update: {
+          contents?: string | null
+          created_at?: string
+          description?: string | null
+          display_time?: string | null
+          id?: number
+          title?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           created_at: string
@@ -81,21 +108,21 @@ export type Database = {
           file_url: string
           id: number
           task_id: number
-          user: string
+          user_email: string
         }
         Insert: {
           created_at?: string
           file_url: string
           id?: number
           task_id: number
-          user: string
+          user_email: string
         }
         Update: {
           created_at?: string
           file_url?: string
           id?: number
           task_id?: number
-          user?: string
+          user_email?: string
         }
         Relationships: [
           {
@@ -106,8 +133,8 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "uploads_user_fkey"
-            columns: ["user"]
+            foreignKeyName: "uploads_user_email_fkey"
+            columns: ["user_email"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["email"]
