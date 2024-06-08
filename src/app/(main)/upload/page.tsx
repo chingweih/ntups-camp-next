@@ -16,7 +16,12 @@ import { cn } from '@/lib/utils'
 import { getUser } from '@/utils/auth'
 import { Tables } from '@/utils/database.types'
 import { createClient } from '@/utils/supabase/server'
+import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: '上傳',
+}
 
 type Tasks = Tables<'tasks'>[]
 

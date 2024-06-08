@@ -13,6 +13,7 @@ import { Url } from 'next/dist/shared/lib/router/router'
 import { colors } from '@/lib/custom-colors'
 import Image from 'next/image'
 import { shimmerPlaceholder } from '@/lib/image-placeholder'
+import { Metadata, ResolvingMetadata } from 'next'
 
 const options: HTMLReactParserOptions = {
   replace: (domNode) => {
@@ -166,4 +167,22 @@ async function getPostContents(id: string) {
   }
 
   return data[0]
+}
+
+type Props = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const id = params.id
+
+  const postTitle = (await getPostContents(id))?.title
+
+  return {
+    title: postTitle,
+  }
 }
