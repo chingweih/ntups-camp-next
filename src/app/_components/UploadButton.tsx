@@ -30,7 +30,7 @@ export default function UploadActions({
 
   return (
     <>
-      <CardContent className='pb-0 flex flex-col items-center justify-center gap-1'>
+      <CardContent className='pb-0 flex flex-col items-center justify-center gap-1 p-0'>
         {passed ? (
           <Badge variant='destructive'>已截止</Badge>
         ) : (

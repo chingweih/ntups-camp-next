@@ -52,7 +52,7 @@ async function TaskList() {
 
         return (
           <Card key={task.id} className='grid grid-cols-2 p-3'>
-            <CardHeader className='pb-3 pt-3'>
+            <CardHeader className='pb-3 pt-3 pr-0'>
               <CardTitle>{task.name}</CardTitle>
               <CardDescription>{task.description}</CardDescription>
               <p className={cn('text-sm text-bold')}>
