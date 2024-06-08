@@ -1,10 +1,6 @@
 import UploadActions from '@/app/_components/UploadButton'
-import UploadButton from '@/app/_components/UploadButton'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -12,9 +8,6 @@ import {
 import { cn } from '@/lib/utils'
 import { getUser } from '@/utils/auth'
 import { createClient } from '@/utils/supabase/server'
-import { create } from 'domain'
-import { CheckCheck, Download } from 'lucide-react'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 export default async function UploadPage() {

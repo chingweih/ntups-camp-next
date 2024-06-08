@@ -1,18 +1,18 @@
 'use client'
 
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { dtOptions, locale } from '@/lib/dt-options'
+import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
+import { CheckCheck, Download } from 'lucide-react'
+import Link from 'next/link'
 import { Dispatch, SetStateAction, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import uploadFile from '../(main)/upload/action'
 import SubmitBtn from './SubmitBtn'
-import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
-import { CardContent } from '@/components/ui/card'
-import { CheckCheck, Download } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { dtOptions, locale } from '@/lib/dt-options'
-import { Badge } from '@/components/ui/badge'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
 
 export default function UploadActions({
   taskId,
