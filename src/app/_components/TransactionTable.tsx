@@ -13,18 +13,9 @@ import { type Transaction } from '../(main)/bank/bank-quries'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import React from 'react'
+import { dtOptions as options, locale } from '@/lib/dt-options'
 
 function getDateString(timestamp?: string) {
-  const options = {
-    month: '2-digit' as const,
-    day: '2-digit' as const,
-    hour: '2-digit' as const,
-    minute: '2-digit' as const,
-    timeZone: 'Asia/Taipei',
-  }
-
-  const locale = 'en-US'
-
   return timestamp
     ? new Date(timestamp).toLocaleTimeString(locale, options)
     : new Date().toLocaleTimeString(locale, options)

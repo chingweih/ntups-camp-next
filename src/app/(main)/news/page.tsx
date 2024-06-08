@@ -3,6 +3,9 @@ import { Button } from '@/components/ui/button'
 import { createClient } from '@/utils/supabase/server'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { Tables } from '@/utils/database.types'
+
+type Posts = Tables<'posts'>[]
 
 export default async function NewsPage() {
   const posts = await getPosts()
@@ -26,7 +29,7 @@ export async function getPosts(limit?: number) {
   return data
 }
 
-export function PostList({ posts }: { posts: any[] | null }) {
+export function PostList({ posts }: { posts: Posts | null }) {
   if (!posts) {
     return <p className='text-center'>目前還沒有新聞哦！</p>
   }

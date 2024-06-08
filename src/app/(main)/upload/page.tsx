@@ -14,8 +14,11 @@ import {
 import { dtOptions, locale } from '@/lib/dt-options'
 import { cn } from '@/lib/utils'
 import { getUser } from '@/utils/auth'
+import { Tables } from '@/utils/database.types'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+
+type Tasks = Tables<'tasks'>[]
 
 export default async function UploadPage() {
   const { user } = await getUser()
@@ -46,7 +49,7 @@ export default async function UploadPage() {
   )
 }
 
-export async function TaskList({ tasks }: { tasks: any[] | null }) {
+export async function TaskList({ tasks }: { tasks: Tasks | null }) {
   if (!tasks) {
     return null
   }
