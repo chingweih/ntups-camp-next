@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     template: '%s | 臺大政治營',
     default: '憲政熱映中｜臺大政治營',
   },
+  applicationName: '臺大政治營',
   description: 'July 15-19｜2024 模擬選戰',
   manifest: '/manifest.json',
   appleWebApp: true,
@@ -56,13 +57,13 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased container flex justify-center items-start p-5',
+          'min-h-screen bg-background font-sans antialiased container flex justify-center items-start p-5 pt-3',
           inter.variable
         )}
         style={{ backgroundColor: colors.pageBackground }}
       >
         <div className='mx-auto w-full max-w-md'>
-          <div className='flex flex-row items-center justify-center m-2'>
+          <div className='flex flex-row items-center justify-center m-2 mt-1'>
             <Image src={title} alt='憲政熱映中' height={50} priority={true} />
           </div>
           <SpeedInsights />
