@@ -444,11 +444,13 @@
     },
     {
       "src": "ios/192.png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "ios/256.png",
-      "sizes": "256x256"
+      "sizes": "256x256",
+      "purpose": "maskable"
     },
     {
       "src": "ios/512.png",
@@ -458,5 +460,6 @@
       "src": "ios/1024.png",
       "sizes": "1024x1024"
     }
-  ]
+  ],
+  "id": "ntupscamp.2024.ethan.huang"
 }
