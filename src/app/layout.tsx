@@ -19,6 +19,24 @@ export const metadata: Metadata = {
   },
   description: 'July 15-19｜2024 模擬選戰',
   manifest: '/manifest.json',
+  appleWebApp: true,
+  icons: [
+    {
+      rel: 'icon',
+      sizes: '32x32',
+      url: '/ios/32.png',
+    },
+    {
+      rel: 'icon',
+      sizes: '16x16',
+      url: '/ios/16.png',
+    },
+    {
+      rel: 'apple-touch-icon',
+      sizes: '180x180',
+      url: '/ios/180.png',
+    },
+  ],
 }
 
 export const viewport: Viewport = {
@@ -26,7 +44,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   minimumScale: 1,
   userScalable: false,
-  themeColor: '#528eca',
+  themeColor: colors.pageBackground,
 }
 
 export default function RootLayout({
