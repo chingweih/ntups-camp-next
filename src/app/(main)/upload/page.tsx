@@ -1,10 +1,17 @@
 import UploadActions from '@/app/_components/UploadButton'
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { dtOptions, locale } from '@/lib/dt-options'
 import { cn } from '@/lib/utils'
 import { getUser } from '@/utils/auth'
 import { createClient } from '@/utils/supabase/server'
@@ -17,18 +24,25 @@ export default async function UploadPage() {
     redirect(`/login?next=${encodeURI('/upload')}`)
   }
 
-  return <TaskList />
+  return (
+    <>
+      <TaskList />
+      <Accordion type='single' collapsible className='p-5'>
+        <AccordionItem value='faq'>
+          <AccordionTrigger>上傳注意事項</AccordionTrigger>
+          <AccordionContent>
+            <ul className='list-disc pl-5'>
+              <li>僅接受 5MB 以下的 PDF 檔案</li>
+              <li>系統僅會採用最後一次上傳的版本</li>
+              <li>上傳完成後，請自行下載檔案確認內容完整、版本正確</li>
+              <li>截止時間後，將不再開放上傳功能</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    </>
+  )
 }
-
-const dtOptions = {
-  month: '2-digit' as const,
-  day: '2-digit' as const,
-  hour: '2-digit' as const,
-  minute: '2-digit' as const,
-  timeZone: 'Asia/Taipei',
-}
-
-const locale = 'en-US'
 
 async function TaskList() {
   const tasks = await getTasks()

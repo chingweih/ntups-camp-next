@@ -13,6 +13,7 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import uploadFile from '../(main)/upload/action'
 import SubmitBtn from './SubmitBtn'
+import { colors } from '@/lib/custom-colors'
 
 export default function UploadActions({
   taskId,
@@ -50,7 +51,7 @@ export default function UploadActions({
         >
           <CardContent
             className='flex flex-row items-center justify-between p-0 m-3 rounded'
-            style={{ backgroundColor: '#528ECA' }}
+            style={{ backgroundColor: colors.primaryBlue }}
           >
             <motion.p
               initial={{ y: 7.5, opacity: 0 }}

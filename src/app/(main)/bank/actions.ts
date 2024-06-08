@@ -45,7 +45,7 @@ export async function insertTransaction(
   })
 
   if (error) {
-    return error.message.toString()
+    return '使用者不存在或其他錯誤'
   } else {
     revalidatePath('/bank')
     redirect('/bank')

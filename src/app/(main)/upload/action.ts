@@ -1,4 +1,5 @@
 'use server'
+import 'server-only'
 
 import { getUser } from '@/utils/auth'
 import { createClient } from '@/utils/supabase/server'

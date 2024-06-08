@@ -13,6 +13,16 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'mgykeszptryxsxgawfvt.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/assets/**',
+      },
+    ],
+  },
 }
 
 export default withPWA(nextConfig)

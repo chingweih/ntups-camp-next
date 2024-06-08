@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       posts: {
         Row: {
-          contents: string | null
+          contents: string
           created_at: string
           description: string | null
           display_time: string | null
@@ -19,7 +19,7 @@ export type Database = {
           title: string
         }
         Insert: {
-          contents?: string | null
+          contents: string
           created_at?: string
           description?: string | null
           display_time?: string | null
@@ -27,7 +27,7 @@ export type Database = {
           title: string
         }
         Update: {
-          contents?: string | null
+          contents?: string
           created_at?: string
           description?: string | null
           display_time?: string | null

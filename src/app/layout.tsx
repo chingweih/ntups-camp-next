@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { Toaster } from '@/components/ui/sonner'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Navigation from './_components/Navigation'
+import { colors } from '@/lib/custom-colors'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -40,7 +41,7 @@ export default function RootLayout({
           'min-h-screen bg-background font-sans antialiased container flex justify-center items-start p-5',
           inter.variable
         )}
-        style={{ backgroundColor: '#fffefc' }}
+        style={{ backgroundColor: colors.pageBackground }}
       >
         <div className='mx-auto w-full max-w-md'>
           <div className='flex flex-row items-center justify-center m-2'>
