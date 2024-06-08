@@ -16,6 +16,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@serwist/next": "^9.0.2",
     "@supabase/ssr": "^0.3.0",
     "@vercel/speed-insights": "^1.0.10",
     "class-variance-authority": "^0.7.0",
@@ -24,7 +25,6 @@
     "html-react-parser": "^5.1.10",
     "lucide-react": "^0.378.0",
     "next": "14.2.3",
-    "next-pwa": "^5.6.0",
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
@@ -41,6 +41,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
+    "serwist": "^9.0.2",
     "supabase": "^1.165.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
