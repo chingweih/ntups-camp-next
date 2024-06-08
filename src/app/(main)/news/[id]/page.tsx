@@ -36,7 +36,7 @@ const options: HTMLReactParserOptions = {
 
     if (typedDomNode.attribs && typedDomNode.name === 'h1') {
       return (
-        <h1 className='text-2xl font-bold mb-3'>
+        <h1 className='text-2xl font-bold my-8'>
           {typedDomNode.children &&
             domToReact(typedDomNode.children as DOMNode[], options)}
         </h1>
@@ -45,7 +45,7 @@ const options: HTMLReactParserOptions = {
 
     if (typedDomNode.attribs && typedDomNode.name === 'h2') {
       return (
-        <h2 className='text-xl font-bold mb-3'>
+        <h2 className='text-xl font-bold mb-5 mt-10'>
           {typedDomNode.children &&
             domToReact(typedDomNode.children as DOMNode[], options)}
         </h2>
@@ -72,7 +72,7 @@ const options: HTMLReactParserOptions = {
 
     if (typedDomNode.attribs && typedDomNode.name === 'p') {
       return (
-        <p className='text-base mb-3'>
+        <p className='text-base my-3 leading-relaxed'>
           {typedDomNode.children &&
             domToReact(typedDomNode.children as DOMNode[], options)}
         </p>
@@ -81,7 +81,7 @@ const options: HTMLReactParserOptions = {
 
     if (typedDomNode.attribs && typedDomNode.name === 'ul') {
       return (
-        <ul className='list-disc pl-5 mb-3'>
+        <ul className='list-disc pl-5 my-5'>
           {typedDomNode.children &&
             domToReact(typedDomNode.children as DOMNode[], options)}
         </ul>
@@ -90,7 +90,7 @@ const options: HTMLReactParserOptions = {
 
     if (typedDomNode.attribs && typedDomNode.name === 'ol') {
       return (
-        <ol className='list-decimal pl-5 mb-3'>
+        <ol className='list-decimal pl-5 my-5'>
           {typedDomNode.children &&
             domToReact(typedDomNode.children as DOMNode[], options)}
         </ol>

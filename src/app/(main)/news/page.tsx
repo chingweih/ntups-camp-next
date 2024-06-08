@@ -40,11 +40,11 @@ export function PostList({ posts }: { posts: any[] | null }) {
               href={`/news/${post.id}`}
               className='flex flex-row items-center mb-2 gap-2'
             >
-              <Badge className='w-1/6 text-xs'>新聞</Badge>
-              <Button variant='link' className='p-0 w-4/6'>
+              <Badge className='text-xs'>新聞</Badge>
+              <Button variant='link' className='p-0'>
                 <h2 className='text-lg font-bold truncate'>{post.title}</h2>
               </Button>
-              <ArrowRight className='w-1/6' size={22} />
+              <ArrowRight className='w-6' size={22} />
             </Link>
             <p className='text-gray-500 pl-3'>{post.description}</p>
           </div>
