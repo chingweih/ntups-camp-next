@@ -64,7 +64,11 @@ export default function UploadActions({
               {' 已上傳'}
             </motion.p>
             <Button asChild variant='link' className='text-xs'>
-              <Link href={fileUrlState} className='text-white pr-4'>
+              <Link
+                href={fileUrlState}
+                className='text-white pr-4'
+                target='_blank noopener noreferrer'
+              >
                 <Download size={20} color='white' className='pr-1' />
                 下載
               </Link>
