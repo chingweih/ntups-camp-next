@@ -14,7 +14,12 @@ export default async function Home() {
 
   return (
     <main>
-      <Image src={headerImg} alt='2024 臺大政治營' className='rounded' />
+      <Image
+        src={headerImg}
+        alt='2024 臺大政治營'
+        className='rounded'
+        priority={true}
+      />
       <div className='mt-14 mb-5 flex flex-row items-center justify-between'>
         <h1 className='text-2xl font-bold flex flex-row items-center justify-between gap-3'>
           <Landmark size={24} />

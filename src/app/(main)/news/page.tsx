@@ -35,18 +35,18 @@ export function PostList({ posts }: { posts: any[] | null }) {
     <>
       {posts.map((post) => {
         return (
-          <div key={post.id} className='p-4 mb-4'>
+          <div key={post.id} className='py-4 mb-4'>
             <Link
               href={`/news/${post.id}`}
-              className='flex flex-row items-center mb-3 gap-2'
+              className='flex flex-row items-center mb-2 gap-2'
             >
-              <Badge>新聞</Badge>
-              <Button variant='link' className='p-0'>
-                <h2 className='text-xl font-bold'>{post.title}</h2>
+              <Badge className='w-1/6 text-xs'>新聞</Badge>
+              <Button variant='link' className='p-0 w-4/6'>
+                <h2 className='text-lg font-bold truncate'>{post.title}</h2>
               </Button>
-              <ArrowRight size={22} />
+              <ArrowRight className='w-1/6' size={22} />
             </Link>
-            <p className='text-gray-500 pl-5'>{post.description}</p>
+            <p className='text-gray-500 pl-3'>{post.description}</p>
           </div>
         )
       })}
