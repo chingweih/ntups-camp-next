@@ -47,17 +47,22 @@ export default function UploadActions({
           animate={{ y: 0, opacity: 1 }}
           transition={{ ease: 'easeInOut', duration: 0.5 }}
           className='col-span-2'
-          key={fileUrlState}
         >
           <CardContent
             className='flex flex-row items-center justify-between p-0 m-3 rounded'
             style={{ backgroundColor: '#528ECA' }}
           >
-            <p className='text-xs text-white p-0 pl-3 flex flex-row gap-2 items-center'>
+            <motion.p
+              initial={{ y: 7.5, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ ease: 'easeInOut', duration: 0.5 }}
+              className='text-xs text-white p-0 pl-3 flex flex-row gap-2 items-center'
+              key={createdAtState}
+            >
               <CheckCheck size={20} color='white' className='pr-1' />
               {new Date(createdAtState).toLocaleTimeString(locale, dtOptions)}
               {' 已上傳'}
-            </p>
+            </motion.p>
             <Button asChild variant='link' className='text-xs'>
               <Link href={fileUrlState} className='text-white pr-4'>
                 <Download size={20} color='white' className='pr-1' />
@@ -92,6 +97,7 @@ function UploadButton({
           toast.error(error)
         }
         if (data) {
+          toast.success('上傳成功！')
           setFileUrlState(data.file_url)
           setCreatedAtState(data.created_at)
           formRef.current?.reset()
