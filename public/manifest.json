@@ -553,7 +553,7 @@
     {
       "src": "ios/192.png",
       "sizes": "192x192",
-      "purpose": "maskable"
+      "purpose": "any"
     },
     {
       "src": "ios/256.png",
