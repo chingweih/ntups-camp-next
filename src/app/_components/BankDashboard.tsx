@@ -12,12 +12,8 @@ import { getTransactions, getUserBalance } from '../(main)/bank/bank-quries'
 export async function BankDashboard() {
   const { user } = await getUser()
 
-  if (!user?.email) {
-    return null
-  }
-
-  const balance = (await getUserBalance(user)) || 0
-  const transactions = await getTransactions(user)
+  const balance = user ? (await getUserBalance(user)) || 0 : 0
+  const transactions = user ? await getTransactions(user) : null
 
   return (
     <div className='flex flex-row w-full gap-4 mb-5'>

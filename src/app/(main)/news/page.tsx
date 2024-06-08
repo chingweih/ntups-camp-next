@@ -7,12 +7,32 @@ import Link from 'next/link'
 export default async function NewsPage() {
   const posts = await getPosts()
 
+  return <PostList posts={posts} />
+}
+
+export async function getPosts(limit?: number) {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .limit(limit || 100) // default limit to 100
+
+  if (error) {
+    console.error(error)
+    return null
+  }
+
+  return data
+}
+
+export function PostList({ posts }: { posts: any[] | null }) {
   if (!posts) {
     return <p className='text-center'>目前還沒有新聞哦！</p>
   }
 
   return (
-    <div>
+    <>
       {posts.map((post) => {
         return (
           <div key={post.id} className='p-4 mb-4'>
@@ -30,19 +50,6 @@ export default async function NewsPage() {
           </div>
         )
       })}
-    </div>
+    </>
   )
-}
-
-export async function getPosts() {
-  const supabase = createClient()
-
-  const { data, error } = await supabase.from('posts').select('*')
-
-  if (error) {
-    console.error(error)
-    return null
-  }
-
-  return data
 }

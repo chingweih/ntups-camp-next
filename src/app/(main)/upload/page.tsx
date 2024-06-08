@@ -24,9 +24,11 @@ export default async function UploadPage() {
     redirect(`/login?next=${encodeURI('/upload')}`)
   }
 
+  const tasks = await getTasks()
+
   return (
     <>
-      <TaskList />
+      <TaskList tasks={tasks} />
       <Accordion type='single' collapsible className='p-5'>
         <AccordionItem value='faq'>
           <AccordionTrigger>上傳注意事項</AccordionTrigger>
@@ -44,9 +46,7 @@ export default async function UploadPage() {
   )
 }
 
-async function TaskList() {
-  const tasks = await getTasks()
-
+export async function TaskList({ tasks }: { tasks: any[] | null }) {
   if (!tasks) {
     return null
   }
@@ -88,13 +88,16 @@ async function TaskList() {
   )
 }
 
-async function getTasks() {
+export async function getTasks(limit?: number, ascending?: boolean) {
   const supabase = createClient()
 
   const { data: tasks, error } = await supabase
     .from('tasks')
     .select('*')
-    .order('due_datetime', { ascending: true })
+    .order('due_datetime', {
+      ascending: ascending === undefined ? true : ascending,
+    }) // default ascending to true
+    .limit(limit || 100) // default limit to 100
 
   if (error || !tasks) {
     return null
