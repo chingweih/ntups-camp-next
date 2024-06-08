@@ -20,7 +20,9 @@ export const metadata: Metadata = {
   applicationName: '臺大政治營',
   description: 'July 15-19｜2024 模擬選戰',
   manifest: '/manifest.json',
-  appleWebApp: true,
+  appleWebApp: {
+    capable: true,
+  },
   icons: [
     {
       rel: 'icon',
