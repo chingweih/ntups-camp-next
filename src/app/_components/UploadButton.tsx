@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button'
 import { dtOptions, locale } from '@/lib/dt-options'
 import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 
 export default function UploadActions({
   taskId,
@@ -41,22 +42,30 @@ export default function UploadActions({
         )}
       </CardContent>
       {fileUrlState && createdAtState ? (
-        <CardContent
-          className='col-span-2 flex flex-row items-center justify-between p-0 m-3 rounded'
-          style={{ backgroundColor: '#528ECA' }}
+        <motion.div
+          initial={{ y: 7.5, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ ease: 'easeInOut', duration: 0.5 }}
+          className='col-span-2'
+          key={fileUrlState}
         >
-          <p className='text-xs text-white p-0 pl-3 flex flex-row gap-2 items-center'>
-            <CheckCheck size={20} color='white' className='pr-1' />
-            {new Date(createdAtState).toLocaleTimeString(locale, dtOptions)}
-            {' 已上傳'}
-          </p>
-          <Button asChild variant='link' className='text-xs'>
-            <Link href={fileUrlState} className='text-white pr-4'>
-              <Download size={20} color='white' className='pr-1' />
-              下載
-            </Link>
-          </Button>
-        </CardContent>
+          <CardContent
+            className='flex flex-row items-center justify-between p-0 m-3 rounded'
+            style={{ backgroundColor: '#528ECA' }}
+          >
+            <p className='text-xs text-white p-0 pl-3 flex flex-row gap-2 items-center'>
+              <CheckCheck size={20} color='white' className='pr-1' />
+              {new Date(createdAtState).toLocaleTimeString(locale, dtOptions)}
+              {' 已上傳'}
+            </p>
+            <Button asChild variant='link' className='text-xs'>
+              <Link href={fileUrlState} className='text-white pr-4'>
+                <Download size={20} color='white' className='pr-1' />
+                下載
+              </Link>
+            </Button>
+          </CardContent>
+        </motion.div>
       ) : null}
     </>
   )
