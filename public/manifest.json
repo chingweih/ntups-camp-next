@@ -8,7 +8,7 @@
   "scope": "/",
   "short_name": "臺大政治營",
   "start_url": "/",
-  "theme_color": "#528eca",
+  "theme_color": "#fffefc",
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",
@@ -457,11 +457,6 @@
     {
       "src": "ios/1024.png",
       "sizes": "1024x1024"
-    },
-    {
-      "src": "ios/1024.png",
-      "sizes": "1024x1024",
-      "purpose": "maskable"
     }
   ]
 }
