@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { Url } from 'next/dist/shared/lib/router/router'
 import { colors } from '@/lib/custom-colors'
 import Image from 'next/image'
+import { shimmerPlaceholder } from '@/lib/image-placeholder'
 
 const options: HTMLReactParserOptions = {
   replace: (domNode) => {
@@ -116,6 +117,8 @@ const options: HTMLReactParserOptions = {
           {...props}
           className='w-full my-5 rounded'
           alt={(props.alt as string) || 'blog-image'}
+          placeholder='blur'
+          blurDataURL={shimmerPlaceholder(50, 50)}
         />
       )
     }
