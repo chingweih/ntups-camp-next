@@ -25,16 +25,28 @@ export default async function uploadFile(formData: FormData, taskId: number) {
     return { error: error.message }
   }
 
-  const { error: dbError } = await supabase.from('uploads').insert({
-    task_id: taskId,
-    user_email: user?.email,
-    file_url: data.path,
-  })
+  const { data: recordData, error: dbError } = await supabase
+    .from('uploads')
+    .insert({
+      task_id: taskId,
+      user_email: user?.email,
+      file_url: data.path,
+    })
+    .select()
 
   if (dbError) {
     return { error: dbError.message }
   }
 
-  revalidatePath('/upload')
-  redirect('/upload')
+  const { data: fileUrl, error: urlError } = await supabase.storage
+    .from('files')
+    .createSignedUrl(recordData[0].file_url, 3600)
+
+  if (urlError || !fileUrl) {
+    return { error: urlError?.message }
+  }
+
+  return {
+    data: { file_url: fileUrl.signedUrl, created_at: recordData[0].created_at },
+  }
 }

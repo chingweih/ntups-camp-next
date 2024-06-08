@@ -1,13 +1,76 @@
 'use client'
 
 import { Input } from '@/components/ui/input'
-import { useRef } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import uploadFile from '../(main)/upload/action'
 import SubmitBtn from './SubmitBtn'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { CardContent } from '@/components/ui/card'
+import { CheckCheck, Download } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { dtOptions, locale } from '@/lib/dt-options'
+import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
 
-export default function UploadButton({ taskId }: { taskId: number }) {
+export default function UploadActions({
+  taskId,
+  fileUrl,
+  createdAt,
+  passed,
+}: {
+  taskId: number
+  fileUrl: string | null
+  createdAt: string | null
+  passed: boolean
+}) {
+  const [fileUrlState, setFileUrlState] = useState(fileUrl)
+  const [createdAtState, setCreatedAtState] = useState(createdAt)
+
+  return (
+    <>
+      <CardContent className='pb-0 flex flex-col items-center justify-center gap-1'>
+        {passed ? (
+          <Badge variant='destructive'>已截止</Badge>
+        ) : (
+          <UploadButton
+            taskId={taskId}
+            setFileUrlState={setFileUrlState}
+            setCreatedAtState={setCreatedAtState}
+          />
+        )}
+      </CardContent>
+      {fileUrlState && createdAtState ? (
+        <CardContent
+          className='col-span-2 flex flex-row items-center justify-between p-0 m-3 rounded'
+          style={{ backgroundColor: '#528ECA' }}
+        >
+          <p className='text-xs text-white p-0 pl-3 flex flex-row gap-2 items-center'>
+            <CheckCheck size={20} color='white' className='pr-1' />
+            {new Date(createdAtState).toLocaleTimeString(locale, dtOptions)}
+            {' 已上傳'}
+          </p>
+          <Button asChild variant='link' className='text-xs'>
+            <Link href={fileUrlState} className='text-white pr-4'>
+              <Download size={20} color='white' className='pr-1' />
+              下載
+            </Link>
+          </Button>
+        </CardContent>
+      ) : null}
+    </>
+  )
+}
+
+function UploadButton({
+  taskId,
+  setFileUrlState,
+  setCreatedAtState,
+}: {
+  taskId: number
+  setFileUrlState: Dispatch<SetStateAction<string | null>>
+  setCreatedAtState: Dispatch<SetStateAction<string | null>>
+}) {
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -15,9 +78,14 @@ export default function UploadButton({ taskId }: { taskId: number }) {
     <form
       ref={formRef}
       action={async (formData: FormData) => {
-        const { error } = await uploadFile(formData, taskId)
+        const { data, error } = await uploadFile(formData, taskId)
         if (error) {
           toast.error(error)
+        }
+        if (data) {
+          setFileUrlState(data.file_url)
+          setCreatedAtState(data.created_at)
+          formRef.current?.reset()
         }
       }}
     >

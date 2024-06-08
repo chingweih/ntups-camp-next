@@ -1,3 +1,4 @@
+import UploadActions from '@/app/_components/UploadButton'
 import UploadButton from '@/app/_components/UploadButton'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -11,7 +12,8 @@ import {
 import { cn } from '@/lib/utils'
 import { getUser } from '@/utils/auth'
 import { createClient } from '@/utils/supabase/server'
-import { Download } from 'lucide-react'
+import { create } from 'domain'
+import { CheckCheck, Download } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -51,14 +53,13 @@ async function TaskList() {
           dtOptions
         )
         const passed = dueDt < Date.now()
-        const fileUrl = await getUploads(task.id)
+        const uploadInfo = await getUploads(task.id)
+        const fileUrl = uploadInfo?.fileUrl || null
+        const createdAt = uploadInfo?.createdAt || null
 
         return (
-          <Card
-            key={task.id}
-            className='flex flex-row items-center justify-between'
-          >
-            <CardHeader>
+          <Card key={task.id} className='grid grid-cols-2 p-3'>
+            <CardHeader className='pb-3 pt-3'>
               <CardTitle>{task.name}</CardTitle>
               <CardDescription>{task.description}</CardDescription>
               <p className={cn('text-sm text-bold')}>
@@ -67,24 +68,12 @@ async function TaskList() {
                 {dueDtString}
               </p>
             </CardHeader>
-            <CardContent className='pb-0 flex flex-col items-center justify-center gap-1 w-1/2'>
-              {fileUrl ? (
-                <>
-                  <p className='text-xs text-slate-400'>已上傳</p>
-                  <Button asChild variant='link'>
-                    <Link href={fileUrl}>
-                      <Download size={20} className='pr-1' />
-                      下載
-                    </Link>
-                  </Button>
-                </>
-              ) : null}
-              {passed ? (
-                <Badge variant='destructive'>已截止</Badge>
-              ) : (
-                <UploadButton taskId={task.id} />
-              )}
-            </CardContent>
+            <UploadActions
+              taskId={task.id}
+              fileUrl={fileUrl}
+              createdAt={createdAt}
+              passed={passed}
+            />
           </Card>
         )
       })}
@@ -118,7 +107,7 @@ async function getUploads(taskId: number) {
 
   const { data: uploads, error } = await supabase
     .from('uploads')
-    .select('file_url')
+    .select('*')
     .eq('task_id', taskId)
     .eq('user_email', user.email)
     .order('id', { ascending: false })
@@ -136,5 +125,5 @@ async function getUploads(taskId: number) {
     return null
   }
 
-  return fileUrl.signedUrl
+  return { fileUrl: fileUrl.signedUrl, createdAt: uploads[0].created_at }
 }
