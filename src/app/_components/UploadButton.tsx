@@ -104,8 +104,8 @@ function UploadButton({
           toast.success('上傳成功！')
           setFileUrlState(data.file_url)
           setCreatedAtState(data.created_at)
-          formRef.current?.reset()
         }
+        formRef.current?.reset()
       }}
     >
       <SubmitBtn
