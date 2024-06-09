@@ -12,16 +12,35 @@ import { colors } from '@/lib/custom-colors'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
+const APP_NAME = '臺大政治營'
+const APP_DEFAULT_TITLE = '憲政熱映中｜臺大政治營'
+const APP_DESCRIPTION = 'July 15-19｜2024 模擬選戰'
+const APP_TITLE_TEMPLATE = '%s | 臺大政治營'
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ntupscamp.ethanhuang.me'),
   title: {
-    template: '%s | 臺大政治營',
-    default: '憲政熱映中｜臺大政治營',
+    template: APP_TITLE_TEMPLATE,
+    default: APP_DEFAULT_TITLE,
   },
-  applicationName: '臺大政治營',
-  description: 'July 15-19｜2024 模擬選戰',
+  applicationName: APP_NAME,
+  description: APP_DESCRIPTION,
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
+    title: APP_NAME,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'zh_TW',
+    siteName: APP_NAME,
+    title: APP_DEFAULT_TITLE,
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary',
+    title: APP_DEFAULT_TITLE,
+    description: APP_DESCRIPTION,
   },
   icons: [
     {
