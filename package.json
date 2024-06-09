@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "fast": "next dev --turbo",
-    "build": "next build",
+    "dev": "node swEnvBuild.js && next dev",
+    "fast": "node swEnvBuild.js && next dev --turbo",
+    "build": "next build && node swEnvBuild.js",
     "start": "next start",
     "lint": "next lint"
   },
@@ -22,6 +22,8 @@
     "@vercel/speed-insights": "^1.0.10",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
+    "firebase": "^10.12.2",
     "framer-motion": "^11.1.9",
     "html-react-parser": "^5.1.10",
     "lucide-react": "^0.378.0",

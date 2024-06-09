@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { getUser } from '@/utils/auth'
 import Link from 'next/link'
 import UserGreeting from './UserGreeting'
+import { RequestNotificationPermission } from '@/utils/firebase/Notification'
 
 export default async function UserHeader() {
   const { user, displayName: userDisplayName } = await getUser()
@@ -23,13 +24,16 @@ export default async function UserHeader() {
           </Avatar>
           <UserGreeting user={user} displayName={userDisplayName} />
         </div>
-        <Button variant='link' asChild>
-          {user ? (
-            <Link href='/logout'>登出</Link>
-          ) : (
-            <Link href='/login'>登入</Link>
-          )}
-        </Button>
+        <div className='flex flex-row items-center justify-end'>
+          <RequestNotificationPermission user={user} />
+          <Button variant='link' asChild>
+            {user ? (
+              <Link href='/logout'>登出</Link>
+            ) : (
+              <Link href='/login'>登入</Link>
+            )}
+          </Button>
+        </div>
       </div>
     </>
   )

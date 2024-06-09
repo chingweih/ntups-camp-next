@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      fcm_tokens: {
+        Row: {
+          created_at: string
+          fcm_token: string
+          id: number
+          user_agent: string | null
+          user_email: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          fcm_token: string
+          id?: number
+          user_agent?: string | null
+          user_email: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          fcm_token?: string
+          id?: number
+          user_agent?: string | null
+          user_email?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fcm_tokens_user_email_fkey"
+            columns: ["user_email"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["email"]
+          },
+          {
+            foreignKeyName: "fcm_tokens_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           contents: string
