@@ -28,6 +28,7 @@ export async function addFcmToken(token: string) {
   if (existingTokens.length > 0) {
     const existingToken = existingTokens.find((t) => t.fcm_token === token)
     if (existingToken) {
+      console.log('Token already exists.')
       return
     }
   }
