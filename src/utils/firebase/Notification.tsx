@@ -34,6 +34,7 @@ export function RequestNotificationPermission({
 }) {
   const [permission, setPermission] = useState<boolean>(false)
   const [token, setToken] = useState<string | null>(null)
+  const [fcmSupport, setFcmSupport] = useState<boolean>(true)
 
   async function requestPermission() {
     try {
@@ -52,9 +53,9 @@ export function RequestNotificationPermission({
     if (token) {
       addFcmToken(token)
     }
-  }, [token])
+  }, [token, user, permission])
 
-  return user ? (
+  return user && fcmSupport ? (
     <>
       <Button onClick={requestPermission} variant='ghost' className='p-2.5'>
         {permission ? (
@@ -63,7 +64,11 @@ export function RequestNotificationPermission({
           <BellOff size={iconSize} className='text-red-500' />
         )}
       </Button>
-      <FcmInit setToken={setToken} permission={permission} />
+      <FcmInit
+        setToken={setToken}
+        permission={permission}
+        setFcmSupport={setFcmSupport}
+      />
     </>
   ) : null
 }
@@ -71,8 +76,10 @@ export function RequestNotificationPermission({
 export function FcmInit({
   setToken,
   permission,
+  setFcmSupport,
 }: {
   setToken: React.Dispatch<SetStateAction<string | null>>
+  setFcmSupport: React.Dispatch<SetStateAction<boolean>>
   permission: boolean
 }) {
   useEffect(() => {
@@ -80,9 +87,11 @@ export function FcmInit({
       const firebaseSupported = await isSupported()
       if (!firebaseSupported) {
         console.log('[FCM] not supported')
+        setFcmSupport(false)
         return
       }
 
+      setFcmSupport(true)
       const messaging = getMessaging(app)
       const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY
       getToken(messaging, { vapidKey: vapidKey })
@@ -110,7 +119,7 @@ export function FcmInit({
     }
 
     checkSupport()
-  }, [setToken, permission])
+  }, [setToken, permission, setFcmSupport])
 
   return null
 }

@@ -10,6 +10,7 @@ export async function addFcmToken(token: string) {
   const { user } = await getUser()
 
   if (!user || !token || !user.email) {
+    console.error('User or token is missing.')
     return
   }
 
@@ -45,5 +46,7 @@ export async function addFcmToken(token: string) {
   if (error) {
     console.error('An error occurred while inserting token. ', error)
     return
+  } else {
+    console.log('Token inserted successfully.')
   }
 }
