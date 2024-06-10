@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { getPosts } from './(main)/news/page'
+import { getPosts } from './(user)/(main)/news/page'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPosts()

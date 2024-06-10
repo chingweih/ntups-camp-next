@@ -1,4 +1,4 @@
-import { TransactionTable } from './../../_components/TransactionTable'
+import { TransactionTable } from '../../../_components/TransactionTable'
 
 import { Button } from '@/components/ui/button'
 import { getUser } from '@/utils/auth'

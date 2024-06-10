@@ -7,7 +7,10 @@ import {
 import { Activity, DollarSign } from 'lucide-react'
 import { currencyFormatter, currencyFormatterWithSign } from '@/lib/formatters'
 import { getUser } from '@/utils/auth'
-import { getTransactions, getUserBalance } from '../(main)/bank/bank-quries'
+import {
+  getTransactions,
+  getUserBalance,
+} from '../(user)/(main)/bank/bank-quries'
 
 export async function BankDashboard() {
   const { user } = await getUser()

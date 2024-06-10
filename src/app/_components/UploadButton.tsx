@@ -11,7 +11,7 @@ import { CheckCheck, Download } from 'lucide-react'
 import Link from 'next/link'
 import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import uploadFile from '../(main)/upload/action'
+import uploadFile from '../(user)/(main)/upload/action'
 import SubmitBtn from './SubmitBtn'
 import { colors } from '@/lib/custom-colors'
 

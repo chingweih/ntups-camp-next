@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import headerImg from '@/assets/header.png'
-import { BankDashboard } from '../_components/BankDashboard'
+import { BankDashboard } from '../../_components/BankDashboard'
 import Link from 'next/link'
 import { ArrowRight, FileText, Landmark, Newspaper } from 'lucide-react'
 import { getUser } from '@/utils/auth'

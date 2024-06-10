@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import PageLoading from '../_components/PageLoading'
+import PageLoading from '../../_components/PageLoading'
 import { Button } from '@/components/ui/button'
 
 export default function AdmireLoadingAnimation() {

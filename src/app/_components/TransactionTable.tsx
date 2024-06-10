@@ -9,7 +9,7 @@ import {
   TableRow,
 } from '@/app/_components/TableNotes'
 import { currencyFormatterWithSign } from '@/lib/formatters'
-import { type Transaction } from '../(main)/bank/bank-quries'
+import { type Transaction } from '../(user)/(main)/bank/bank-quries'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import React from 'react'

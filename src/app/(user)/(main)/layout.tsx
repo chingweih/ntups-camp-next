@@ -1,4 +1,4 @@
-import UserHeader from '../_components/UserHeader'
+import UserHeader from '../../_components/UserHeader'
 
 export default function MainLayout({
   children,

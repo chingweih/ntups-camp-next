@@ -1,14 +1,11 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import title from '../assets/title.png'
 
-import { cn } from '@/lib/utils'
-import Image from 'next/image'
 import { Toaster } from '@/components/ui/sonner'
-import { SpeedInsights } from '@vercel/speed-insights/next'
-import Navigation from './_components/Navigation'
 import { colors } from '@/lib/custom-colors'
+import { cn } from '@/lib/utils'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -83,15 +80,9 @@ export default function RootLayout({
         )}
         style={{ backgroundColor: colors.pageBackground }}
       >
-        <div className='mx-auto w-full max-w-md'>
-          <div className='flex flex-row items-center justify-center m-2 mt-1'>
-            <Image src={title} alt='憲政熱映中' height={50} priority={true} />
-          </div>
-          <SpeedInsights />
-          <Navigation />
-          {children}
-        </div>
+        {children}
         <Toaster />
+        <SpeedInsights />
       </body>
     </html>
   )
