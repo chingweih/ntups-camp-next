@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { colors } from '@/lib/custom-colors'
+import { getUser } from '@/utils/auth'
 import {
   Bell,
   Landmark,
@@ -11,16 +12,23 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
+import { redirect } from 'next/navigation'
 
-export default function AdminPanel({
+export default async function AdminPanel({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const { user, isAdmin } = await getUser()
+
+  if (!user || !isAdmin) {
+    redirect('/')
+  }
+
   return (
     <div className='flex flex-row items-start justify-between w-full gap-5'>
       <div
-        className='w-3/12 flex flex-col items-center justify-center gap-3 rounded p-5 text-white'
+        className='w-2/12 flex flex-col items-center justify-center gap-3 rounded p-5 text-white'
         style={{ backgroundColor: colors.primaryBlue }}
       >
         <AdminLink href='/admin/user' Icon={User}>
@@ -40,7 +48,7 @@ export default function AdminPanel({
         </AdminLink>
       </div>
       <Separator orientation='vertical' />
-      <div className='w-9/12'>{children}</div>
+      <div className='w-10/12'>{children}</div>
     </div>
   )
 }

@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 import { dtOptions as options, locale } from '@/lib/dt-options'
 
-function getDateString(timestamp?: string) {
+export function getDateString(timestamp?: string) {
   return timestamp
     ? new Date(timestamp).toLocaleTimeString(locale, options)
     : new Date().toLocaleTimeString(locale, options)
