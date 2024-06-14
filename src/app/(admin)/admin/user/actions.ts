@@ -1,8 +1,21 @@
 'use server'
 import 'server-only'
+
 import { supabaseAdmin } from '@/utils/supabase/admin'
 import { FullUser } from './UserTable'
 import { revalidatePath } from 'next/cache'
+
+export type NewUser = {
+  email?: string
+  password?: string
+  displayName?: string
+  verified?: boolean
+  admin?: boolean
+  balance?: number
+  realName?: string
+  teamType?: string
+  userRole?: string
+}
 
 export async function toggleUserVerified(user: FullUser | null) {
   if (!user) {
@@ -118,6 +131,94 @@ export async function changeUserPassword(
   if (error) {
     return false
   }
+
+  return true
+}
+
+export async function updateUserData(user: FullUser | null, props: NewUser) {
+  if (!user) {
+    return false
+  }
+
+  const { error } = await supabaseAdmin
+    .from('users')
+    .update({
+      display_name: props.displayName,
+      verified: props.verified,
+      is_admin: props.admin,
+      balance: props.balance,
+      real_name: props.realName,
+      team_type: props.teamType,
+      role: props.userRole,
+    })
+    .eq('id', user.id)
+
+  if (error) {
+    return false
+  }
+
+  revalidatePath('/admin/user')
+
+  return true
+}
+
+export async function newUser(props: NewUser) {
+  if (!props.email || !props.password) {
+    return false
+  }
+
+  const { data, error } = await supabaseAdmin.auth.signUp({
+    email: `${props.email}@${process.env.ACCOUNT_DOMAIN}`,
+    password: props.password,
+  })
+
+  if (error || !data.user?.id || !data.user?.email) {
+    return false
+  }
+
+  const { error: dbError } = await supabaseAdmin
+    .from('users')
+    .update({
+      display_name: props.displayName,
+      verified: props.verified,
+      is_admin: props.admin,
+      balance: props.balance,
+      real_name: props.realName,
+      team_type: props.teamType,
+      role: props.userRole,
+    })
+    .eq('id', data.user.id)
+
+  if (dbError) {
+    console.error(dbError)
+    return false
+  }
+
+  revalidatePath('/admin/user')
+
+  return true
+}
+
+export async function deleteUser(user: FullUser | null) {
+  if (!user) {
+    return false
+  }
+
+  const { error: dbError } = await supabaseAdmin
+    .from('users')
+    .delete()
+    .eq('id', user.id)
+
+  const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(
+    user.id
+  )
+
+  if (dbError || authError) {
+    console.error(dbError, authError)
+    return false
+  }
+
+  revalidatePath('/admin/user')
 
   return true
 }

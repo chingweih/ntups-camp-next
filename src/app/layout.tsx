@@ -75,12 +75,14 @@ export default function RootLayout({
     <html lang='en'>
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased container flex justify-center items-start p-5 pt-3',
+          'min-h-screen bg-background font-sans antialiased',
           inter.variable
         )}
         style={{ backgroundColor: colors.pageBackground }}
       >
-        {children}
+        <div className='container flex justify-center items-start p-5 pt-3'>
+          {children}
+        </div>
         <Toaster />
         <SpeedInsights />
       </body>

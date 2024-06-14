@@ -9,13 +9,24 @@ import { Label } from '@/components/ui/label'
 import { currencyFormatter } from '@/lib/formatters'
 import { type User } from '@supabase/supabase-js'
 import { ColumnDef } from '@tanstack/react-table'
-import { Diff, UserCheck, UserCog, UserX } from 'lucide-react'
+import {
+  Delete,
+  Diff,
+  Plus,
+  Trash,
+  UserCheck,
+  UserCog,
+  UserX,
+} from 'lucide-react'
 import {
   adjustUserBalance,
   changeUserPassword,
+  deleteUser,
+  newUser,
   setUserBalance,
   toggleUserAdmin,
   toggleUserVerified,
+  updateUserData,
 } from './actions'
 import {
   Dialog,
@@ -26,6 +37,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import SubmitBtn from '@/app/_components/SubmitBtn'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
@@ -38,10 +56,27 @@ export type FullUser = User & {
   admin: boolean
   isCurrent: boolean
   balance: number
+  realName: string | null
+  teamType: string | null
+  userRole: string | null
+}
+
+const userRoleMap = {
+  staff: '工作人員',
+  npc: 'NPC',
+  team: '小隊',
 }
 
 export default function UserTable({ users }: { users: FullUser[] }) {
-  return <DataTable columns={columns} data={users} />
+  return (
+    <>
+      <div className='p-3 flex flex-row items-center justify-between'>
+        <h2 className='font-bold text-lg'>帳號列表</h2>
+        <NewUserDialog />
+      </div>
+      <DataTable columns={columns} data={users} />
+    </>
+  )
 }
 
 const columns: ColumnDef<FullUser>[] = [
@@ -57,7 +92,9 @@ const columns: ColumnDef<FullUser>[] = [
           <div className='flex flex-col items-start justify-center'>
             <p>{user.displayName}</p>
             <p className='text-slate-500 text-xs'>
-              {user.email?.split('@')[0]}
+              {`${user.email?.split('@')[0]}${
+                user.realName ? ' (' + user.realName + ')' : ''
+              }`}
             </p>
           </div>
           {user.admin ? (
@@ -66,6 +103,24 @@ const columns: ColumnDef<FullUser>[] = [
             </Badge>
           ) : null}
         </div>
+      )
+    },
+  },
+  {
+    id: 'userRole',
+    header: '類別',
+    cell: ({ row }) => {
+      const user = row.original
+
+      return (
+        <>
+          {user.userRole ? (
+            <Badge>
+              {user.teamType}
+              {user.userRole}
+            </Badge>
+          ) : null}
+        </>
       )
     },
   },
@@ -83,7 +138,7 @@ const columns: ColumnDef<FullUser>[] = [
       const user = row.original
 
       return (
-        <div className='flex flex-row items-center justify-start gap-2'>
+        <div className='flex flex-row items-center justify-start gap-1'>
           <div className='flex flex-row items-center justify-start gap-2 pr-2'>
             <Checkbox
               checked={user.verified}
@@ -101,11 +156,118 @@ const columns: ColumnDef<FullUser>[] = [
           </Button>
           <BalanceDialog user={user} />
           <EditUserDialog user={user} />
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant='ghost' className='m-0 p-2 text-red-500'>
+                <Trash size={18} />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>確定要刪除此帳號嗎？</DialogTitle>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant='destructive'
+                  onClick={() =>
+                    deleteUser(user).then((result) => {
+                      if (!result) {
+                        toast.error('帳號刪除失敗')
+                        return
+                      }
+                      toast.success('帳號已刪除')
+                    })
+                  }
+                >
+                  <Trash size={18} className='mr-2' />
+                  刪除
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       )
     },
   },
 ]
+
+function NewUserDialog() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant='default'>
+          <Plus size={18} className='mr-2' />
+          新增帳號
+        </Button>
+      </DialogTrigger>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader>
+          <DialogTitle>新增帳號</DialogTitle>
+        </DialogHeader>
+        <form
+          action={(formData: FormData) => {
+            newUser({
+              email: formData.get('email') as string,
+              password: formData.get('password') as string,
+              displayName: formData.get('displayName') as string,
+              realName: formData.get('realName') as string,
+              userRole: formData.get('userRole') as string,
+            }).then((result) => {
+              if (!result) {
+                toast.error('帳號新增失敗')
+                return
+              }
+              setOpen(false)
+              toast.success('帳號已新增')
+            })
+          }}
+          className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+        >
+          <Label className='col-span-3'>帳號</Label>
+          <input
+            type='text'
+            name='email'
+            className='w-full p-2 border border-slate-300 rounded col-span-3'
+          />
+          <Label className='col-span-3'>密碼</Label>
+          <input
+            type='text'
+            name='password'
+            className='w-full p-2 border border-slate-300 rounded col-span-3'
+          />
+          <Label className='col-span-3'>顯示名稱</Label>
+          <input
+            type='text'
+            name='displayName'
+            className='w-full p-2 border border-slate-300 rounded col-span-3'
+          />
+          <Label className='col-span-3'>真實姓名</Label>
+          <input
+            type='text'
+            name='realName'
+            className='w-full p-2 border border-slate-300 rounded col-span-3'
+          />
+          <Label className='col-span-3'>角色</Label>
+          <Select name='userRole'>
+            <SelectTrigger className='w-[180px] col-span-3'>
+              <SelectValue placeholder='請選擇' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='工作人員'>工作人員</SelectItem>
+              <SelectItem value='NPC'>NPC</SelectItem>
+              <SelectItem value='小隊'>小隊</SelectItem>
+            </SelectContent>
+          </Select>
+          <DialogFooter className='col-span-6'>
+            <SubmitBtn name='確定' className='w-40' />
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 function EditUserDialog({ user }: { user: FullUser }) {
   const [open, setOpen] = useState(false)
@@ -130,7 +292,68 @@ function EditUserDialog({ user }: { user: FullUser }) {
               密碼
             </TabsTrigger>
           </TabsList>
-          <TabsContent value='info'></TabsContent>
+          <TabsContent value='info'>
+            <form
+              action={(formData: FormData) => {
+                updateUserData(user, {
+                  displayName: formData.get('displayName') as string,
+                  realName: formData.get('realName') as string,
+                  userRole: formData.get('userRole') as string,
+                  teamType: formData.get('teamType') as string,
+                }).then(() => {
+                  setOpen(false)
+                  toast.success('帳號資料已更新')
+                })
+              }}
+              className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+            >
+              <Label className='col-span-3'>顯示名稱</Label>
+              <input
+                type='text'
+                name='displayName'
+                className='w-full p-2 border border-slate-300 rounded col-span-3'
+                defaultValue={user.displayName || ''}
+              />
+              <Label className='col-span-3'>真實姓名</Label>
+              <input
+                type='text'
+                name='realName'
+                className='w-full p-2 border border-slate-300 rounded col-span-3'
+                defaultValue={user.realName || ''}
+              />
+              <Label className='col-span-3'>角色</Label>
+              <Select name='userRole' defaultValue={user.userRole || undefined}>
+                <SelectTrigger className='w-[180px] col-span-3'>
+                  <SelectValue placeholder='請選擇' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='工作人員'>工作人員</SelectItem>
+                  <SelectItem value='NPC'>NPC</SelectItem>
+                  <SelectItem value='小隊'>小隊</SelectItem>
+                </SelectContent>
+              </Select>
+              {user.userRole == '小隊' ? (
+                <>
+                  <Label className='col-span-3'>小隊類型</Label>
+                  <Select
+                    name='teamType'
+                    defaultValue={user.teamType || undefined}
+                  >
+                    <SelectTrigger className='w-[180px] col-span-3'>
+                      <SelectValue placeholder='請選擇' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value='政黨'>政黨</SelectItem>
+                      <SelectItem value='利團'>利團</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </>
+              ) : null}
+              <DialogFooter className='col-span-6'>
+                <SubmitBtn name='確定' className='w-40' />
+              </DialogFooter>
+            </form>
+          </TabsContent>
           <TabsContent value='password'>
             <form
               action={(formData: FormData) => {

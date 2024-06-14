@@ -4,6 +4,9 @@ import {
   checkUserVerified,
   getUser,
   getUserDisplayName,
+  getUserRealName,
+  getUserRole,
+  getUserTeamType,
 } from '@/utils/auth'
 import { supabaseAdmin } from '@/utils/supabase/admin'
 import UserTable from './UserTable'
@@ -21,6 +24,9 @@ export default async function AdminUser() {
       admin: await checkUserAdmin(user),
       isCurrent: loginUser?.id === user.id,
       balance: (await adminGetUserBalance(user)) || 0,
+      realName: await getUserRealName(user),
+      teamType: await getUserTeamType(user),
+      userRole: await getUserRole(user),
     }
   })
 

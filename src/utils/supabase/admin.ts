@@ -1,13 +1,14 @@
-import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from '@supabase/ssr'
 import { Database } from '../database.types'
 
-export const supabaseAdmin = createClient<Database>(
+export const supabaseAdmin = createServerClient<Database>(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_KEY!,
   {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
+    cookies: {
+      get: () => '',
+      set: (_, __, ____) => undefined,
+      remove: (_, __) => undefined,
     },
   }
 )

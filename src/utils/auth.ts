@@ -91,3 +91,57 @@ export async function adminGetUserBalance(user: User) {
 
   return data?.balance
 }
+
+export async function getUserRealName(user: User) {
+  if (!user?.email) {
+    return null
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .select('real_name')
+    .eq('email', user.email)
+    .single()
+
+  if (error) {
+    return null
+  }
+
+  return data?.real_name
+}
+
+export async function getUserTeamType(user: User) {
+  if (!user?.email) {
+    return null
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .select('team_type')
+    .eq('email', user.email)
+    .single()
+
+  if (error) {
+    return null
+  }
+
+  return data?.team_type
+}
+
+export async function getUserRole(user: User) {
+  if (!user?.email) {
+    return null
+  }
+
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .select('role')
+    .eq('email', user.email)
+    .single()
+
+  if (error) {
+    return null
+  }
+
+  return data?.role
+}
