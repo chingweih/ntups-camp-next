@@ -9,9 +9,10 @@ import { Label } from '@/components/ui/label'
 import { currencyFormatter } from '@/lib/formatters'
 import { type User } from '@supabase/supabase-js'
 import { ColumnDef } from '@tanstack/react-table'
-import { Diff, UserCheck, UserX } from 'lucide-react'
+import { Diff, UserCheck, UserCog, UserX } from 'lucide-react'
 import {
   adjustUserBalance,
+  changeUserPassword,
   setUserBalance,
   toggleUserAdmin,
   toggleUserVerified,
@@ -37,6 +38,10 @@ export type FullUser = User & {
   admin: boolean
   isCurrent: boolean
   balance: number
+}
+
+export default function UserTable({ users }: { users: FullUser[] }) {
+  return <DataTable columns={columns} data={users} />
 }
 
 const columns: ColumnDef<FullUser>[] = [
@@ -95,14 +100,67 @@ const columns: ColumnDef<FullUser>[] = [
             {user.admin ? <UserCheck size={18} /> : <UserX size={18} />}
           </Button>
           <BalanceDialog user={user} />
+          <EditUserDialog user={user} />
         </div>
       )
     },
   },
 ]
 
-export default function UserTable({ users }: { users: FullUser[] }) {
-  return <DataTable columns={columns} data={users} />
+function EditUserDialog({ user }: { user: FullUser }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant='ghost' className='m-0 p-2'>
+          <UserCog size={18} />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className='sm:max-w-[425px]'>
+        <DialogHeader>
+          <DialogTitle>修改帳號資料</DialogTitle>
+        </DialogHeader>
+        <Tabs defaultValue='info' className='w-full'>
+          <TabsList className='w-full'>
+            <TabsTrigger value='info' className='w-full'>
+              資料
+            </TabsTrigger>
+            <TabsTrigger value='password' className='w-full'>
+              密碼
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value='info'></TabsContent>
+          <TabsContent value='password'>
+            <form
+              action={(formData: FormData) => {
+                const newPassword = formData.get('password') as string
+                changeUserPassword(user, newPassword).then((result) => {
+                  if (result) {
+                    setOpen(false)
+                    toast.success('密碼已更新')
+                  } else {
+                    toast.error('密碼更新失敗，請使用不同的密碼')
+                  }
+                })
+              }}
+              className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+            >
+              <Label className='col-span-3'>新密碼</Label>
+              <input
+                type='text'
+                name='password'
+                className='w-full p-2 border border-slate-300 rounded col-span-3'
+              />
+              <DialogFooter className='col-span-6'>
+                <SubmitBtn name='確定' className='w-40' />
+              </DialogFooter>
+            </form>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
+  )
 }
 
 function BalanceDialog({ user }: { user: FullUser }) {

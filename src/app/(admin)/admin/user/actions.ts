@@ -102,3 +102,22 @@ export async function adjustUserBalance(
 
   revalidatePath('/admin/user')
 }
+
+export async function changeUserPassword(
+  user: FullUser | null,
+  password: string
+) {
+  if (!user) {
+    return false
+  }
+
+  const { error } = await supabaseAdmin.auth.admin.updateUserById(user.id, {
+    password: password,
+  })
+
+  if (error) {
+    return false
+  }
+
+  return true
+}
