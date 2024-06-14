@@ -29,6 +29,7 @@ import SubmitBtn from '@/app/_components/SubmitBtn'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 export type FullUser = User & {
   displayName: string | null
@@ -106,10 +107,11 @@ export default function UserTable({ users }: { users: FullUser[] }) {
 
 function BalanceDialog({ user }: { user: FullUser }) {
   const [adjustedBalance, setAdjustedBalance] = useState<string>('0')
+  const [open, setOpen] = useState(false)
   const addRef = useRef<HTMLButtonElement>(null)
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant='ghost' className='m-0 p-2'>
           <Diff size={18} />
@@ -140,6 +142,8 @@ function BalanceDialog({ user }: { user: FullUser }) {
                   user,
                   formData.get('balance') as unknown as number
                 )
+                  .then(() => setOpen(false))
+                  .finally(() => toast.success('帳戶餘額已更新'))
               }}
               className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
             >
@@ -160,12 +164,14 @@ function BalanceDialog({ user }: { user: FullUser }) {
           </TabsContent>
           <TabsContent value='adjust'>
             <form
-              action={(formData: FormData) => {
+              action={async (formData: FormData) => {
                 adjustUserBalance(
                   user,
                   formData.get('amount') as unknown as number,
                   addRef.current?.ariaChecked == 'true'
                 )
+                  .then(() => setOpen(false))
+                  .finally(() => toast.success('帳戶餘額已調整'))
               }}
               className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
             >
