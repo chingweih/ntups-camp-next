@@ -23,7 +23,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/admin',
+        destination: '/admin/user',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default withSerwist(nextConfig)
-// export default nextConfig

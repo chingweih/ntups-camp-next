@@ -16,7 +16,7 @@ export default async function UserHeader() {
           <UserAvatar user={user} userDisplayName={userDisplayName} />
           <UserGreeting user={user} displayName={userDisplayName} />
           {isAdmin ? (
-            <Link href='/admin/user'>
+            <Link href='/admin'>
               <Badge variant='outline' className='mr-2'>
                 Admin
               </Badge>
