@@ -1,7 +1,7 @@
+import { adminGetUserByEmail } from '@/utils/auth'
 import { supabaseAdmin } from '@/utils/supabase/admin'
-import TaskTable from './TaskTable'
-import { adminGetUserByEmail, getUserDisplayName } from '@/utils/auth'
 import 'groupby-polyfill/lib/polyfill.js'
+import TaskTable from './TaskTable'
 
 export default async function TaskPage() {
   const dbTasks = await getTasks()

@@ -38,9 +38,9 @@ export default function TaskTable({ tasks }: { tasks: TasksWithFiles[] }) {
       <TableHeader>
         <TableRow>
           <TableHead className='w-3/12'>截止時間</TableHead>
-          <TableHead className='w-4/12'>項目</TableHead>
+          <TableHead className='w-3/12'>項目</TableHead>
           <TableHead className='w-2/12'>小隊</TableHead>
-          <TableHead className='w-3/12'>操作</TableHead>
+          <TableHead className='w-4/12'>操作</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -113,9 +113,8 @@ export default function TaskTable({ tasks }: { tasks: TasksWithFiles[] }) {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>
-                          最後上傳時間
-                          <br />
+                        <TableCell colSpan={2}>
+                          最後上傳時間：
                           {getDateString(file.file.created_at)}
                         </TableCell>
                         <TableCell>
@@ -128,12 +127,11 @@ export default function TaskTable({ tasks }: { tasks: TasksWithFiles[] }) {
                             </Link>
                           </Button>
                         </TableCell>
-                        <TableCell></TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell>尚未有檔案</TableCell>
+                      <TableCell colSpan={4}>尚未有檔案</TableCell>
                     </TableRow>
                   )}
                 </>
