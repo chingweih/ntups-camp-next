@@ -13,3 +13,7 @@ export function getDateString(timestamp?: string) {
     ? new Date(timestamp).toLocaleTimeString(locale, dtOptions)
     : new Date().toLocaleTimeString(locale, dtOptions)
 }
+
+export function timePassed(timestamp: string) {
+  return Date.parse(timestamp) < Date.now()
+}

@@ -32,7 +32,7 @@ export default function DeleteDialog({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>確定要刪除此帳號嗎？</DialogTitle>
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <DialogFooter>
           <Button

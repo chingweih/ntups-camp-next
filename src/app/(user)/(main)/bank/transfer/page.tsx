@@ -11,7 +11,7 @@ export default async function Transfer() {
   const { user } = await getUser()
 
   if (!user?.email) {
-    redirect('/login')
+    return null
   }
 
   return <TransferForm user={user} />

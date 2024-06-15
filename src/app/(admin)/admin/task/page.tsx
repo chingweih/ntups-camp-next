@@ -14,7 +14,7 @@ export default async function TaskPage() {
         ...task,
         files: await getUploadFiles(task.id),
       }
-    })
+    }),
   )
 
   if (!tasks) return <div>Failed to load tasks</div>
@@ -23,7 +23,10 @@ export default async function TaskPage() {
 }
 
 async function getTasks() {
-  const { data, error } = await supabaseAdmin.from('tasks').select('*')
+  const { data, error } = await supabaseAdmin
+    .from('tasks')
+    .select('*')
+    .order('due_datetime', { ascending: true })
 
   if (error) return null
 
@@ -44,7 +47,7 @@ export async function getUploadFiles(taskId: number) {
   Object.keys(groupByEmail).forEach(async (key) => {
     groupByEmail[key]?.sort(
       (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
   })
 

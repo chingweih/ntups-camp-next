@@ -89,7 +89,7 @@ export type Database = {
           created_at: string
           description: string | null
           due_datetime: string
-          for_team: Database["public"]["Enums"]["team_type"] | null
+          for_team: string | null
           id: number
           name: string
         }
@@ -97,7 +97,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           due_datetime: string
-          for_team?: Database["public"]["Enums"]["team_type"] | null
+          for_team?: string | null
           id?: number
           name?: string
         }
@@ -105,7 +105,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           due_datetime?: string
-          for_team?: Database["public"]["Enums"]["team_type"] | null
+          for_team?: string | null
           id?: number
           name?: string
         }

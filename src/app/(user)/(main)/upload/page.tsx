@@ -29,7 +29,7 @@ export default async function UploadPage() {
   const { user } = await getUser()
 
   if (!user?.email) {
-    redirect(`/login?next=${encodeURI('/upload')}`)
+    return null
   }
 
   const tasks = await getTasks()
