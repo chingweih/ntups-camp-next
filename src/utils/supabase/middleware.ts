@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { Database } from '../database.types'
+import { getUser } from '../auth'
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({
@@ -57,6 +58,11 @@ export async function updateSession(request: NextRequest) {
 
   // refreshing the auth token
   await supabase.auth.getUser()
+
+  const { isAdmin } = await getUser()
+  if (request.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
 
   return response
 }

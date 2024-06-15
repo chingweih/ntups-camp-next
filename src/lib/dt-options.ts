@@ -7,3 +7,9 @@ export const dtOptions = {
 }
 
 export const locale = 'en-US'
+
+export function getDateString(timestamp?: string) {
+  return timestamp
+    ? new Date(timestamp).toLocaleTimeString(locale, dtOptions)
+    : new Date().toLocaleTimeString(locale, dtOptions)
+}

@@ -59,6 +59,7 @@ export type Database = {
           display_time: string | null
           id: number
           order: number | null
+          tag: string | null
           title: string
         }
         Insert: {
@@ -68,6 +69,7 @@ export type Database = {
           display_time?: string | null
           id?: number
           order?: number | null
+          tag?: string | null
           title: string
         }
         Update: {
@@ -77,6 +79,7 @@ export type Database = {
           display_time?: string | null
           id?: number
           order?: number | null
+          tag?: string | null
           title?: string
         }
         Relationships: []

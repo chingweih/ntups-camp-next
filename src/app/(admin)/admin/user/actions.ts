@@ -2,8 +2,8 @@
 import 'server-only'
 
 import { supabaseAdmin } from '@/utils/supabase/admin'
-import { FullUser } from './UserTable'
 import { revalidatePath } from 'next/cache'
+import { FullUser } from '@/utils/auth'
 
 export type NewUser = {
   email?: string

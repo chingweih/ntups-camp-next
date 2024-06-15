@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { colors } from '@/lib/custom-colors'
-import { getUser } from '@/utils/auth'
 import {
   Bell,
   Landmark,
@@ -12,19 +11,12 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
-import { redirect } from 'next/navigation'
 
 export default async function AdminPanel({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { user, isAdmin } = await getUser()
-
-  if (!user || !isAdmin) {
-    redirect('/')
-  }
-
   return (
     <div className='flex flex-row items-start justify-between w-full gap-5'>
       <div
@@ -41,7 +33,7 @@ export default async function AdminPanel({
           文章管理
         </AdminLink>
         <AdminLink href='/admin/task' Icon={Upload}>
-          上傳管理
+          文件管理
         </AdminLink>
         <AdminLink href='/admin/notification' Icon={Bell}>
           發送通知

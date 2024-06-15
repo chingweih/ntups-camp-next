@@ -49,17 +49,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
-
-export type FullUser = User & {
-  displayName: string | null
-  verified: boolean
-  admin: boolean
-  isCurrent: boolean
-  balance: number
-  realName: string | null
-  teamType: string | null
-  userRole: string | null
-}
+import DeleteDialog from '@/app/_components/DeleteDialog'
+import { FullUser } from '@/utils/auth'
 
 const userRoleMap = {
   staff: '工作人員',
@@ -156,35 +147,19 @@ const columns: ColumnDef<FullUser>[] = [
           </Button>
           <BalanceDialog user={user} />
           <EditUserDialog user={user} />
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant='ghost' className='m-0 p-2 text-red-500'>
-                <Trash size={18} />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>確定要刪除此帳號嗎？</DialogTitle>
-              </DialogHeader>
-              <DialogFooter>
-                <Button
-                  variant='destructive'
-                  onClick={() =>
-                    deleteUser(user).then((result) => {
-                      if (!result) {
-                        toast.error('帳號刪除失敗')
-                        return
-                      }
-                      toast.success('帳號已刪除')
-                    })
-                  }
-                >
-                  <Trash size={18} className='mr-2' />
-                  刪除
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <DeleteDialog
+            title='確定要刪除此帳號嗎？'
+            onClick={() =>
+              deleteUser(user).then((result) => {
+                if (!result) {
+                  toast.error('帳號刪除失敗')
+                  return false
+                }
+                toast.success('帳號已刪除')
+                return true
+              })
+            }
+          />
         </div>
       )
     },
