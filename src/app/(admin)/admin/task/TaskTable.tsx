@@ -116,7 +116,10 @@ function TaskRow({ task }: { task: TasksWithFiles }) {
               </Badge>
             ) : null}
           </TableCell>
-          <TableCell>{task.name}</TableCell>
+          <TableCell>
+            <h2 className='font-bold'>{task.name}</h2>
+            <p className='text-slate-500'>{task.description}</p>
+          </TableCell>
           <TableCell>
             <Badge>{task.for_team || '所有'}</Badge>
           </TableCell>
