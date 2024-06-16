@@ -1,6 +1,7 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { Database } from '../database.types'
+import { getUser } from '../auth'
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({
@@ -58,5 +59,28 @@ export async function updateSession(request: NextRequest) {
   // refreshing the auth token
   await supabase.auth.getUser()
 
+  const { user, isAdmin } = await getUser()
+  if (request.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
+    if (user) {
+      return NextResponse.redirect(new URL('/', request.url))
+    } else {
+      return NextResponse.redirect(
+        new URL(`/login?next=${request.nextUrl.pathname}`, request.url)
+      )
+    }
+  }
+
+  if (isProtectedRoute(request.nextUrl) && !user) {
+    return NextResponse.redirect(
+      new URL(`/login?next=${request.nextUrl.pathname}`, request.url)
+    )
+  }
+
   return response
+}
+
+function isProtectedRoute(url: URL) {
+  const protectedRoutes = ['/bank', '/upload']
+
+  return protectedRoutes.some((route) => url.pathname.startsWith(route))
 }

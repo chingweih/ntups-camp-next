@@ -7,3 +7,13 @@ export const dtOptions = {
 }
 
 export const locale = 'en-US'
+
+export function getDateString(timestamp?: string) {
+  return timestamp
+    ? new Date(timestamp).toLocaleTimeString(locale, dtOptions)
+    : new Date().toLocaleTimeString(locale, dtOptions)
+}
+
+export function timePassed(timestamp: string) {
+  return Date.parse(timestamp) < Date.now()
+}

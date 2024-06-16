@@ -58,6 +58,8 @@ export type Database = {
           description: string | null
           display_time: string | null
           id: number
+          order: number | null
+          tag: string | null
           title: string
         }
         Insert: {
@@ -66,6 +68,8 @@ export type Database = {
           description?: string | null
           display_time?: string | null
           id?: number
+          order?: number | null
+          tag?: string | null
           title: string
         }
         Update: {
@@ -74,6 +78,8 @@ export type Database = {
           description?: string | null
           display_time?: string | null
           id?: number
+          order?: number | null
+          tag?: string | null
           title?: string
         }
         Relationships: []
@@ -83,6 +89,7 @@ export type Database = {
           created_at: string
           description: string | null
           due_datetime: string
+          for_team: string | null
           id: number
           name: string
         }
@@ -90,6 +97,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           due_datetime: string
+          for_team?: string | null
           id?: number
           name?: string
         }
@@ -97,6 +105,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           due_datetime?: string
+          for_team?: string | null
           id?: number
           name?: string
         }
@@ -192,7 +201,9 @@ export type Database = {
           id: string
           is_admin: boolean
           profile_picture_url: string | null
-          role: Database["public"]["Enums"]["user_role"] | null
+          real_name: string | null
+          role: string | null
+          team_type: string | null
           verified: boolean
         }
         Insert: {
@@ -203,7 +214,9 @@ export type Database = {
           id: string
           is_admin?: boolean
           profile_picture_url?: string | null
-          role?: Database["public"]["Enums"]["user_role"] | null
+          real_name?: string | null
+          role?: string | null
+          team_type?: string | null
           verified?: boolean
         }
         Update: {
@@ -214,7 +227,9 @@ export type Database = {
           id?: string
           is_admin?: boolean
           profile_picture_url?: string | null
-          role?: Database["public"]["Enums"]["user_role"] | null
+          real_name?: string | null
+          role?: string | null
+          team_type?: string | null
           verified?: boolean
         }
         Relationships: [
@@ -235,6 +250,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      team_type: "政黨" | "利團"
       user_role: "staff" | "npc" | "team"
     }
     CompositeTypes: {

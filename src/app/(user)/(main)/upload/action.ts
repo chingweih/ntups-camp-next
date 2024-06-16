@@ -9,7 +9,7 @@ export default async function uploadFile(formData: FormData, taskId: number) {
   const { user, userName } = await getUser()
 
   if (!user?.email) {
-    redirect(`/login?next=${encodeURI('/upload')}`)
+    return { error: 'User not found' }
   }
 
   const supabase = createClient()
