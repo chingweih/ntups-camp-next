@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { dtOptions, locale } from '@/lib/dt-options'
+import { dtOptions, getDateString, locale } from '@/lib/dt-options'
 import { cn } from '@/lib/utils'
 import { getUser } from '@/utils/auth'
 import { Tables } from '@/utils/database.types'
@@ -62,32 +62,32 @@ export async function TaskList({ tasks }: { tasks: Tasks | null }) {
     <div className='flex flex-col gap-5'>
       {tasks.map(async (task) => {
         const dueDt = Date.parse(task.due_datetime)
-        const dueDtString = new Date(dueDt).toLocaleTimeString(
-          locale,
-          dtOptions,
-        )
+        const dueDtString = getDateString(task.due_datetime)
         const passed = dueDt < Date.now()
         const uploadInfo = await getUploads(task.id)
         const fileUrl = uploadInfo?.fileUrl || null
         const createdAt = uploadInfo?.createdAt || null
 
         return (
-          <Card key={task.id} className='grid grid-cols-2 p-3'>
-            <CardHeader className='pb-3 pr-0 pt-3'>
-              <CardTitle>{task.name}</CardTitle>
-              <CardDescription>{task.description}</CardDescription>
-              <p className={cn('text-bold text-sm')}>
-                截止時間：
-                <br />
-                {dueDtString}
+          <Card key={task.id} className='w-full p-1'>
+            <CardHeader className='grid grid-cols-3 items-center gap-3'>
+              <div className='col-span-3'>
+                <CardTitle>{task.name}</CardTitle>
+                <CardDescription className='mt-1'>
+                  {task.description}
+                </CardDescription>
+              </div>
+              <p className={cn('text-bold col-span-2 text-sm')}>
+                <span className='whitespace-nowrap'>截止時間：</span>
+                <span className='whitespace-nowrap'>{dueDtString}</span>
               </p>
+              <UploadActions
+                taskId={task.id}
+                fileUrl={fileUrl}
+                createdAt={createdAt}
+                passed={passed}
+              />
             </CardHeader>
-            <UploadActions
-              taskId={task.id}
-              fileUrl={fileUrl}
-              createdAt={createdAt}
-              passed={passed}
-            />
           </Card>
         )
       })}
@@ -95,7 +95,11 @@ export async function TaskList({ tasks }: { tasks: Tasks | null }) {
   )
 }
 
-export async function getTasks(limit?: number, ascending?: boolean) {
+export async function getTasks(
+  limit?: number,
+  ascending?: boolean,
+  skipPassed?: boolean,
+) {
   const supabase = createClient()
 
   const { teamType } = await getUser()
@@ -104,8 +108,15 @@ export async function getTasks(limit?: number, ascending?: boolean) {
     .from('tasks')
     .select('*')
     .order('due_datetime', {
-      ascending: ascending === undefined ? true : ascending,
+      ascending: ascending === undefined && ascending ? true : ascending,
     }) // default ascending to true
+    .order('name', { ascending: false })
+    .gt(
+      'due_datetime',
+      skipPassed === undefined || !skipPassed
+        ? '1980-06-16T17:47:18+0000'
+        : new Date().toISOString(),
+    )
     .limit(limit || 100) // default limit to 100
 
   let { data: tasks, error } = teamType

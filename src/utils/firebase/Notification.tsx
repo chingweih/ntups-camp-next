@@ -50,8 +50,13 @@ export function RequestNotificationPermission({
   }, [])
 
   useEffect(() => {
+    const tokenKey = 'ntupscamp-fcm-token'
+    const localStorageToken = localStorage.getItem(tokenKey)
     if (token) {
-      addFcmToken(token)
+      if (localStorageToken !== token || !localStorageToken) {
+        localStorage.setItem(tokenKey, token)
+        addFcmToken(token)
+      }
     }
   }, [token, user, permission])
 
@@ -101,7 +106,7 @@ export function FcmInit({
             setToken(currentToken)
           } else {
             console.log(
-              'No registration token available. Request permission to generate one.'
+              'No registration token available. Request permission to generate one.',
             )
           }
         })
@@ -112,7 +117,7 @@ export function FcmInit({
       onMessage(messaging, (payload) => {
         if (payload.notification) {
           toast.info(
-            `${payload.notification.title}｜${payload.notification.body}`
+            `${payload.notification.title}｜${payload.notification.body}`,
           )
         }
       })

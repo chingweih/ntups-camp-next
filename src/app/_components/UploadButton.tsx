@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { dtOptions, locale } from '@/lib/dt-options'
+import { dtOptions, getDateString, locale } from '@/lib/dt-options'
 import { cn } from '@/lib/utils'
 import { motion } from 'framer-motion'
 import { CheckCheck, Download } from 'lucide-react'
@@ -31,7 +31,7 @@ export default function UploadActions({
 
   return (
     <>
-      <CardContent className='pb-0 flex flex-col items-center justify-center gap-1 p-0'>
+      <CardContent className='col-span-1 flex flex-col items-end justify-center gap-1 p-0 pb-0'>
         {passed ? (
           <Badge variant='destructive'>已截止</Badge>
         ) : (
@@ -47,27 +47,27 @@ export default function UploadActions({
           initial={{ y: 7.5, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ ease: 'easeInOut', duration: 0.5 }}
-          className='col-span-2'
+          className='col-span-3'
         >
           <CardContent
-            className='flex flex-row items-center justify-between p-0 m-3 rounded'
+            className='col-span-3 m-0 mt-1 flex flex-row items-center justify-between rounded p-0'
             style={{ backgroundColor: colors.primaryBlue }}
           >
             <motion.p
               initial={{ y: 7.5, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ ease: 'easeInOut', duration: 0.5 }}
-              className='text-xs text-white p-0 pl-3 flex flex-row gap-2 items-center'
+              className='flex flex-row items-center gap-2 p-0 pl-3 text-xs text-white'
               key={createdAtState}
             >
               <CheckCheck size={20} color='white' className='pr-1' />
-              {new Date(createdAtState).toLocaleTimeString(locale, dtOptions)}
+              {getDateString(createdAtState)}
               {' 已上傳'}
             </motion.p>
             <Button asChild variant='link' className='text-xs'>
               <Link
                 href={fileUrlState}
-                className='text-white pr-4'
+                className='pr-4 text-white'
                 target='_blank noopener noreferrer'
               >
                 <Download size={20} color='white' className='pr-1' />

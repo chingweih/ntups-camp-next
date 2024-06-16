@@ -19,14 +19,16 @@ export async function BankDashboard() {
   const transactions = user ? await getTransactions(user) : null
 
   return (
-    <div className='flex flex-row w-full gap-4 mb-5'>
+    <div className='mb-5 flex w-full flex-row gap-4'>
       <Card className='grow'>
         <CardHeader>
           <CardDescription className='flex flex-row items-center justify-between'>
             帳號餘額
             <DollarSign className='h-4 w-4 text-muted-foreground' />
           </CardDescription>
-          <CardTitle>{currencyFormatter.format(balance)}</CardTitle>
+          <CardTitle style={{ fontSize: 'clamp(0.8rem, 5vw, 1.5rem)' }}>
+            {currencyFormatter.format(balance)}
+          </CardTitle>
         </CardHeader>
       </Card>
       <Card className='grow'>
@@ -43,6 +45,7 @@ export async function BankDashboard() {
                   : 'text-green-500'
                 : ''
             }
+            style={{ fontSize: 'clamp(0.8rem, 5vw, 1.5rem)' }}
           >
             {transactions
               ? currencyFormatterWithSign.format(transactions[0].amount)

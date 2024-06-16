@@ -29,5 +29,16 @@ export default function UserGreeting({
     }
   }
 
-  return <h1>{user?.email ? `${greeting(hour)}，${userName}` : '請登入'}</h1>
+  return (
+    <h1>
+      {user?.email ? (
+        <>
+          <span className='whitespace-nowrap'>{greeting(hour)}，</span>
+          <span className='whitespace-nowrap'>{userName}</span>
+        </>
+      ) : (
+        '請登入'
+      )}
+    </h1>
+  )
 }

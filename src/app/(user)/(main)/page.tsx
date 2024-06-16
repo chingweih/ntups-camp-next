@@ -20,8 +20,8 @@ export default async function Home() {
         className='rounded'
         priority={true}
       />
-      <div className='mt-14 mb-5 flex flex-row items-center justify-between'>
-        <h1 className='text-2xl font-bold flex flex-row items-center justify-between gap-3'>
+      <div className='mb-5 mt-14 flex flex-row items-center justify-between'>
+        <h1 className='flex flex-row items-center justify-between gap-3 text-2xl font-bold'>
           <Landmark size={24} />
           銀行帳戶
         </h1>
@@ -35,7 +35,7 @@ export default async function Home() {
       <BankDashboard />
       <Separator className='my-10' />
       <div className='mb-5 flex flex-row items-center justify-between'>
-        <h1 className='text-2xl font-bold flex flex-row items-center justify-between gap-3'>
+        <h1 className='flex flex-row items-center justify-between gap-3 text-2xl font-bold'>
           <Newspaper size={24} />
           最新新聞
         </h1>
@@ -49,7 +49,7 @@ export default async function Home() {
       <PostList posts={await getPosts(1)} />
       <Separator className='my-10' />
       <div className='mb-8 flex flex-row items-center justify-between'>
-        <h1 className='text-2xl font-bold flex flex-row items-center justify-between gap-3'>
+        <h1 className='flex flex-row items-center justify-between gap-3 text-2xl font-bold'>
           <FileText size={24} />
           近期上傳
         </h1>
@@ -60,7 +60,7 @@ export default async function Home() {
           </Link>
         </Button>
       </div>
-      <TaskList tasks={await getTasks(1, false)} />
+      <TaskList tasks={await getTasks(1, true, true)} />
       {user ? null : <div className='h-32' />}
     </main>
   )

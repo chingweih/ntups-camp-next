@@ -109,7 +109,7 @@ function TaskRow({ task }: { task: TasksWithFiles }) {
               timePassed(task.due_datetime) ? 'flex' : '',
             )}
           >
-            <p>{getDateString(task.due_datetime)}</p>
+            <p>{getDateString(task.due_datetime, true)}</p>
             {timePassed(task.due_datetime) ? (
               <Badge className='block w-fit' variant='destructive'>
                 已截止

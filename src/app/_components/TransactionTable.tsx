@@ -13,13 +13,7 @@ import { type Transaction } from '../(user)/(main)/bank/bank-quries'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import React from 'react'
-import { dtOptions as options, locale } from '@/lib/dt-options'
-
-export function getDateString(timestamp?: string) {
-  return timestamp
-    ? new Date(timestamp).toLocaleTimeString(locale, options)
-    : new Date().toLocaleTimeString(locale, options)
-}
+import { getDateString } from '@/lib/dt-options'
 
 export function TransactionTable({
   transactions,
@@ -89,7 +83,7 @@ function NoDataRow() {
     <TableRow>
       <TableCell colSpan={3} className='text-center text-slate-700'>
         尚未有轉帳資料，
-        <Button asChild variant='link' className='p-0 m-0 h-auto'>
+        <Button asChild variant='link' className='m-0 h-auto p-0'>
           <Link href='/bank/transfer' className='decoration-underline'>
             立即轉帳
           </Link>

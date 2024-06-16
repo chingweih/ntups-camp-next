@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTable } from '@/app/_components/DataTable'
-import { getDateString } from '@/app/_components/TransactionTable'
+import { getDateString } from '@/lib/dt-options'
 import { currencyFormatter } from '@/lib/formatters'
 import { Tables } from '@/utils/database.types'
 import { ColumnDef } from '@tanstack/react-table'
