@@ -13,6 +13,7 @@ import Heading from '@tiptap/extension-heading'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import Image from '@tiptap/extension-image'
+import { JSONContent } from 'novel'
 
 export async function deletePost(id: number) {
   const { error } = await supabaseAdmin.from('posts').delete().eq('id', id)
@@ -21,12 +22,58 @@ export async function deletePost(id: number) {
   return error
 }
 
+export async function fetchAndUploadImage(src: string) {
+  const res = await fetch(src)
+  const blob = await res.blob()
+
+  const { data, error } = await supabaseAdmin.storage
+    .from('assets')
+    .upload(`image-${Date.now()}`, blob)
+
+  if (error) {
+    console.error(error)
+    return null
+  }
+
+  const url = supabaseAdmin.storage.from('assets').getPublicUrl(data.path)
+
+  return url.data.publicUrl
+}
+
 export async function updatePost(
   id: number,
   metadata: TablesUpdate<'posts'>,
   postContents: string,
 ) {
-  const html = generateHTML(JSON.parse(postContents), [
+  const postJson: JSONContent = JSON.parse(postContents)
+
+  const parsedContents = await Promise.all<Promise<JSONContent>>(
+    postJson.content?.map(async (content) => {
+      if (content.type === 'image') {
+        if (content.attrs?.src?.startsWith(process.env.SUPABASE_URL)) {
+          return content
+        }
+
+        const url = content.attrs?.src
+        const publicUrl = await fetchAndUploadImage(url)
+        return {
+          ...content,
+          attrs: {
+            ...content.attrs,
+            src: publicUrl,
+          },
+        }
+      } else {
+        return content
+      }
+    }) ?? [],
+  )
+
+  if (parsedContents.length !== 0) {
+    postJson.content = parsedContents
+  }
+
+  const html = generateHTML(postJson, [
     Document,
     Paragraph,
     Text,

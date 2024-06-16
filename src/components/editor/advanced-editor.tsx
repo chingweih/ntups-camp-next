@@ -1,35 +1,35 @@
 'use client'
-import React, { useEffect, useState } from 'react'
 import {
-  EditorRoot,
-  EditorCommand,
-  EditorCommandItem,
-  EditorCommandEmpty,
-  EditorContent,
-  type JSONContent,
-  EditorCommandList,
   EditorBubble,
+  EditorCommand,
+  EditorCommandEmpty,
+  EditorCommandItem,
+  EditorCommandList,
+  EditorContent,
+  EditorRoot,
+  type JSONContent,
 } from 'novel'
 import { ImageResizer, handleCommandNavigation } from 'novel/extensions'
+import { useState } from 'react'
 import { defaultExtensions } from './extensions'
-import { NodeSelector } from './selectors/node-selector'
-import { LinkSelector } from './selectors/link-selector'
 import { ColorSelector } from './selectors/color-selector'
+import { LinkSelector } from './selectors/link-selector'
+import { NodeSelector } from './selectors/node-selector'
 
+import { handleImageDrop, handleImagePaste } from 'novel/plugins'
+import { Separator } from '../ui/separator'
+import { uploadFn } from './image-upload'
 import { TextButtons } from './selectors/text-buttons'
 import { slashCommand, suggestionItems } from './slash-command'
-import { handleImageDrop, handleImagePaste } from 'novel/plugins'
-import { uploadFn } from './image-upload'
-import { Separator } from '../ui/separator'
 
 import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
 import Image from '@tiptap/extension-image'
+import Paragraph from '@tiptap/extension-paragraph'
 
 import { postStyles } from '@/app/(user)/(main)/news/[id]/post-styles'
-import { mergeAttributes } from '@tiptap/core'
 import { cn } from '@/lib/utils'
+import { mergeAttributes } from '@tiptap/core'
 
 const extensions = [
   ...defaultExtensions,
