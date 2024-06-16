@@ -12,6 +12,16 @@ import { supabaseAdmin } from '@/utils/supabase/admin'
 import UserTable from './UserTable'
 
 export default async function AdminUser() {
+  const fullUsers = await adminGetFullUserList()
+
+  if (!fullUsers || fullUsers.length === 0 || !fullUsers[0].email) {
+    return <div>沒有使用者</div>
+  }
+
+  return <UserTable users={fullUsers} />
+}
+
+export async function adminGetFullUserList() {
   const users = await getUserList()
 
   const { user: loginUser } = await getUser()
@@ -30,13 +40,7 @@ export default async function AdminUser() {
     }
   })
 
-  const fullUsers = await Promise.all(userMap)
-
-  if (!users || users.length === 0 || !users[0].email) {
-    return <div>沒有使用者</div>
-  }
-
-  return <UserTable users={fullUsers} />
+  return await Promise.all(userMap)
 }
 
 async function getUserList() {
