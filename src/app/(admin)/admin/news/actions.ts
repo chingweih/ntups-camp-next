@@ -62,5 +62,6 @@ export async function newPost(data: TablesInsert<'posts'>) {
   }
 
   revalidatePath('/admin/news')
+  revalidatePath(`/admin/news/edit/${id[0].id}`)
   return { id: id[0].id }
 }
