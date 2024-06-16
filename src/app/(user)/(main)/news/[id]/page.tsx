@@ -143,7 +143,7 @@ export default async function NewsPost({ params }: { params: { id: string } }) {
           className='sticky top-14 flex flex-row items-center justify-start gap-3 pt-2'
           style={{ backgroundColor: colors.pageBackground }}
         >
-          <Badge className='mb-3'>新聞</Badge>
+          <Badge className='mb-3'>{postContents.tag || '新聞'}</Badge>
           <h1 className='mb-3 text-xl font-bold'>{postContents.title}</h1>
         </div>
         <p className='text-gray-500'>{postContents.description}</p>

@@ -17,7 +17,6 @@ import { getUser } from '@/utils/auth'
 import { Tables } from '@/utils/database.types'
 import { createClient } from '@/utils/supabase/server'
 import { Metadata } from 'next'
-import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: '上傳',
@@ -65,7 +64,7 @@ export async function TaskList({ tasks }: { tasks: Tasks | null }) {
         const dueDt = Date.parse(task.due_datetime)
         const dueDtString = new Date(dueDt).toLocaleTimeString(
           locale,
-          dtOptions
+          dtOptions,
         )
         const passed = dueDt < Date.now()
         const uploadInfo = await getUploads(task.id)
@@ -74,10 +73,10 @@ export async function TaskList({ tasks }: { tasks: Tasks | null }) {
 
         return (
           <Card key={task.id} className='grid grid-cols-2 p-3'>
-            <CardHeader className='pb-3 pt-3 pr-0'>
+            <CardHeader className='pb-3 pr-0 pt-3'>
               <CardTitle>{task.name}</CardTitle>
               <CardDescription>{task.description}</CardDescription>
-              <p className={cn('text-sm text-bold')}>
+              <p className={cn('text-bold text-sm')}>
                 截止時間：
                 <br />
                 {dueDtString}
@@ -99,13 +98,19 @@ export async function TaskList({ tasks }: { tasks: Tasks | null }) {
 export async function getTasks(limit?: number, ascending?: boolean) {
   const supabase = createClient()
 
-  const { data: tasks, error } = await supabase
+  const { teamType } = await getUser()
+
+  const query = supabase
     .from('tasks')
     .select('*')
     .order('due_datetime', {
       ascending: ascending === undefined ? true : ascending,
     }) // default ascending to true
     .limit(limit || 100) // default limit to 100
+
+  let { data: tasks, error } = teamType
+    ? await query.eq('for_team', teamType)
+    : await query
 
   if (error || !tasks) {
     return null

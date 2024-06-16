@@ -19,6 +19,7 @@ export async function getPosts(limit?: number) {
   const { data, error } = await supabase
     .from('posts')
     .select('*')
+    .order('order', { ascending: true })
     .limit(limit || 100) // default limit to 100
 
   if (error) {
@@ -38,18 +39,18 @@ export function PostList({ posts }: { posts: Posts | null }) {
     <>
       {posts.map((post) => {
         return (
-          <div key={post.id} className='py-4 mb-4'>
+          <div key={post.id} className='mb-4 py-4'>
             <Link
               href={`/news/${post.id}`}
-              className='flex flex-row items-center mb-2 gap-2'
+              className='mb-2 flex flex-row items-center gap-2'
             >
-              <Badge className='text-xs'>新聞</Badge>
+              <Badge className='text-xs'>{post.tag || '新聞'}</Badge>
               <Button variant='link' className='p-0'>
-                <h2 className='text-lg font-bold truncate'>{post.title}</h2>
+                <h2 className='truncate text-lg font-bold'>{post.title}</h2>
               </Button>
               <ArrowRight className='w-6' size={22} />
             </Link>
-            <p className='text-gray-500 pl-3'>{post.description}</p>
+            <p className='pl-3 text-gray-500'>{post.description}</p>
           </div>
         )
       })}

@@ -18,6 +18,7 @@ export async function getUser(): Promise<{
   displayName: string | null
   userName: string | null
   isAdmin: boolean
+  teamType: string | null
 }> {
   const supabase = createClient()
   const {
@@ -28,6 +29,7 @@ export async function getUser(): Promise<{
     displayName: await getUserDisplayName(user),
     userName: user?.email?.split('@')[0] || null,
     isAdmin: await checkUserAdmin(user),
+    teamType: await getUserTeamType(user),
   }
 }
 
@@ -141,7 +143,7 @@ export async function getUserRealName(user: User) {
   return data?.real_name
 }
 
-export async function getUserTeamType(user: User) {
+export async function getUserTeamType(user: User | null) {
   if (!user?.email) {
     return null
   }
