@@ -25,6 +25,8 @@ import { Separator } from '../ui/separator'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Heading from '@tiptap/extension-heading'
+import Image from '@tiptap/extension-image'
+
 import { postStyles } from '@/app/(user)/(main)/news/[id]/post-styles'
 import { mergeAttributes } from '@tiptap/core'
 import { cn } from '@/lib/utils'
@@ -33,6 +35,7 @@ const extensions = [
   ...defaultExtensions,
   slashCommand,
   Document,
+  Image,
   Paragraph.configure({ HTMLAttributes: { class: postStyles.p } }),
   Heading.configure({
     levels: [1, 2, 3, 4],

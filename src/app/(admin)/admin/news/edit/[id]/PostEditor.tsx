@@ -16,6 +16,8 @@ import Document from '@tiptap/extension-document'
 import Heading from '@tiptap/extension-heading'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import Image from '@tiptap/extension-image'
+
 import { toast } from 'sonner'
 import { updatePost } from '../../actions'
 import { useRouter } from 'next/navigation'
@@ -31,8 +33,11 @@ export default function PostEditForm({ post }: { post: Tables<'posts'> }) {
       Text,
       CodeBlock,
       Heading,
+      Image,
     ]),
   )
+
+  console.log(content)
   const router = useRouter()
 
   return (

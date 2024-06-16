@@ -12,6 +12,7 @@ import Document from '@tiptap/extension-document'
 import Heading from '@tiptap/extension-heading'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import Image from '@tiptap/extension-image'
 
 export async function deletePost(id: number) {
   const { error } = await supabaseAdmin.from('posts').delete().eq('id', id)
@@ -32,6 +33,7 @@ export async function updatePost(
     CodeBlock,
     Heading,
     Bold,
+    Image,
   ])
 
   const { error } = await supabaseAdmin
@@ -48,6 +50,7 @@ export async function updatePost(
   }
 
   revalidatePath('/admin/news')
+  revalidatePath(`/admin/news/edit/${id}`)
 }
 
 export async function newPost(data: TablesInsert<'posts'>) {
