@@ -54,6 +54,19 @@ export async function updatePost(
 }
 
 export async function newPost(data: TablesInsert<'posts'>) {
+  const { data: ogOrder, error: dbError } = await supabaseAdmin
+    .from('posts')
+    .select('order')
+    .order('order', { ascending: false })
+    .limit(1)
+
+  if (dbError) {
+    console.error(dbError)
+    return { error: dbError.message }
+  }
+
+  data.order = ogOrder?.[0]?.order ? ogOrder[0].order * 2 : 10000
+
   const { data: id, error } = await supabaseAdmin
     .from('posts')
     .insert(data)
@@ -67,4 +80,43 @@ export async function newPost(data: TablesInsert<'posts'>) {
   revalidatePath('/admin/news')
   revalidatePath(`/admin/news/edit/${id[0].id}`)
   return { id: id[0].id }
+}
+
+export async function updatePostOrder(postId: number, newIndex: number) {
+  const { data, error } = await supabaseAdmin
+    .from('posts')
+    .select('id, order')
+    .order('order', { ascending: true })
+
+  if (error) {
+    console.error(error)
+    return error.message
+  }
+
+  if (data[newIndex]?.id === postId) return
+
+  const newOrderBefore = newIndex == 0 ? 0 : data[newIndex - 1]?.order
+  const newOrderAfter = newIndex == data.length - 1 ? 0 : data[newIndex]?.order
+
+  let newOrder = 0
+
+  if (newOrderBefore === 0) {
+    newOrder = newOrderAfter! / 2
+  } else if (newOrderAfter === 0) {
+    newOrder = newOrderBefore! * 2
+  } else {
+    newOrder = (newOrderBefore! + newOrderAfter!) / 2
+  }
+
+  const { error: updateError } = await supabaseAdmin
+    .from('posts')
+    .update({ order: newOrder })
+    .eq('id', postId)
+
+  if (updateError) {
+    console.error(updateError)
+    return updateError.message
+  }
+
+  revalidatePath('/admin/news')
 }

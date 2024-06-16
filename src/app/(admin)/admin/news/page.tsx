@@ -8,7 +8,10 @@ export default async function NewsPage() {
 }
 
 async function getPosts() {
-  const { data, error } = await supabaseAdmin.from('posts').select('*')
+  const { data, error } = await supabaseAdmin
+    .from('posts')
+    .select('*')
+    .order('order', { ascending: true })
 
   if (error) return null
 

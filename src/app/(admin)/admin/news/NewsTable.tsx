@@ -1,37 +1,44 @@
 'use client'
 
-import { DataTable } from '@/app/_components/DataTable'
 import DeleteDialog from '@/app/_components/DeleteDialog'
+import SubmitBtn from '@/app/_components/SubmitBtn'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { getDateString } from '@/lib/dt-options'
-import { Tables } from '@/utils/database.types'
-import { ColumnDef } from '@tanstack/react-table'
-import Link from 'next/link'
-import { toast } from 'sonner'
-import { deletePost, newPost } from './actions'
 import {
   Dialog,
+  DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogContent,
 } from '@/components/ui/dialog'
-import { Plus } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Input } from '@/components/ui/input'
-import SubmitBtn from '@/app/_components/SubmitBtn'
+import { getDateString } from '@/lib/dt-options'
+import { Tables } from '@/utils/database.types'
+import { ColumnDef } from '@tanstack/react-table'
+import { Plus } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
+import { DndTable, RowDragHandleCell } from './DndTable'
+import { deletePost, newPost } from './actions'
 
 const columns: ColumnDef<Tables<'posts'>>[] = [
+  {
+    id: 'drag-handle',
+    header: '移動',
+    cell: ({ row }) => <RowDragHandleCell rowId={row.id.toString()} />,
+    size: 60,
+  },
   {
     accessorKey: 'created_at',
     header: '建立時間',
     cell: ({ row }) => {
       return getDateString(row.original.created_at)
     },
+    size: 150,
   },
   {
     accessorKey: 'tag',
@@ -43,6 +50,7 @@ const columns: ColumnDef<Tables<'posts'>>[] = [
         </Badge>
       )
     },
+    size: 60,
   },
   {
     id: 'title-des',
@@ -55,6 +63,7 @@ const columns: ColumnDef<Tables<'posts'>>[] = [
         </div>
       )
     },
+    size: 250,
   },
   {
     id: 'actions',
@@ -82,6 +91,7 @@ const columns: ColumnDef<Tables<'posts'>>[] = [
         </div>
       )
     },
+    size: 150,
   },
 ]
 
@@ -97,7 +107,7 @@ export default function NewsTable({
         <h2 className='text-lg font-bold'>文章列表</h2>
         <NewPostDialog />
       </div>
-      <DataTable data={posts} columns={columns} />
+      <DndTable data={posts} columns={columns} />
     </>
   )
 }
