@@ -1,5 +1,4 @@
-import { format } from 'date-fns'
-import { zhTW } from 'date-fns/locale'
+import { formatInTimeZone as format } from 'date-fns-tz'
 
 export const dtOptions = {
   month: '2-digit' as const,
@@ -16,7 +15,7 @@ export function getDateString(
   withSeconds: boolean = false,
 ) {
   const dt = timestamp ? new Date(timestamp) : new Date()
-  return format(dt, `MM/dd, HH:mm${withSeconds ? ':ss' : ''}`, { locale: zhTW })
+  return format(dt, 'Asia/Taipei', `MM/dd, HH:mm${withSeconds ? ':ss' : ''}`)
 }
 
 export function timePassed(timestamp: string) {
