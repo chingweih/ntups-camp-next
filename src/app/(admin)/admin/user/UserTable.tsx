@@ -1,23 +1,37 @@
 'use client'
 
 import { DataTable } from '@/app/_components/DataTable'
+import DeleteDialog from '@/app/_components/DeleteDialog'
+import SubmitBtn from '@/app/_components/SubmitBtn'
 import UserAvatar from '@/app/_components/UserAvatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
-import { currencyFormatter } from '@/lib/formatters'
-import { type User } from '@supabase/supabase-js'
-import { ColumnDef } from '@tanstack/react-table'
 import {
-  Delete,
-  Diff,
-  Plus,
-  Trash,
-  UserCheck,
-  UserCog,
-  UserX,
-} from 'lucide-react'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { currencyFormatter } from '@/lib/formatters'
+import { FullUser } from '@/utils/auth'
+import { ColumnDef } from '@tanstack/react-table'
+import { Diff, Plus, UserCheck, UserCog, UserX } from 'lucide-react'
+import { useOptimistic, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import {
   adjustUserBalance,
   changeUserPassword,
@@ -28,29 +42,6 @@ import {
   toggleUserVerified,
   updateUserData,
 } from './actions'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import SubmitBtn from '@/app/_components/SubmitBtn'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { useRef, useState } from 'react'
-import { toast } from 'sonner'
-import DeleteDialog from '@/app/_components/DeleteDialog'
-import { FullUser } from '@/utils/auth'
 
 const userRoleMap = {
   staff: '工作人員',
@@ -59,10 +50,12 @@ const userRoleMap = {
 }
 
 export default function UserTable({ users }: { users: FullUser[] }) {
+  users.sort((a, b) => (a.isCurrent ? -1 : b.isCurrent ? 1 : 0))
+
   return (
     <>
-      <div className='p-3 flex flex-row items-center justify-between'>
-        <h2 className='font-bold text-lg'>帳號列表</h2>
+      <div className='flex flex-row items-center justify-between p-3'>
+        <h2 className='text-lg font-bold'>帳號列表</h2>
         <NewUserDialog />
       </div>
       <DataTable columns={columns} data={users} />
@@ -82,7 +75,7 @@ const columns: ColumnDef<FullUser>[] = [
           <UserAvatar user={user} userDisplayName={user.displayName} />
           <div className='flex flex-col items-start justify-center'>
             <p>{user.displayName}</p>
-            <p className='text-slate-500 text-xs'>
+            <p className='text-xs text-slate-500'>
               {`${user.email?.split('@')[0]}${
                 user.realName ? ' (' + user.realName + ')' : ''
               }`}
@@ -131,20 +124,9 @@ const columns: ColumnDef<FullUser>[] = [
       return (
         <div className='flex flex-row items-center justify-start gap-1'>
           <div className='flex flex-row items-center justify-start gap-2 pr-2'>
-            <Checkbox
-              checked={user.verified}
-              onCheckedChange={() => toggleUserVerified(user)}
-            />
-            <Label>{user.verified ? '已驗證' : '未驗證'}</Label>
+            <VerificationCheckBox user={user} />
           </div>
-          <Button
-            variant='ghost'
-            onClick={() => toggleUserAdmin(user)}
-            disabled={user.isCurrent}
-            className='m-0 p-2'
-          >
-            {user.admin ? <UserCheck size={18} /> : <UserX size={18} />}
-          </Button>
+          <ToggleAdminButton user={user} />
           <BalanceDialog user={user} />
           <EditUserDialog user={user} />
           <DeleteDialog
@@ -159,12 +141,69 @@ const columns: ColumnDef<FullUser>[] = [
                 return true
               })
             }
+            disabled={user.isCurrent}
           />
         </div>
       )
     },
   },
 ]
+
+function ToggleAdminButton({ user }: { user: FullUser }) {
+  const [loading, setLoading] = useState(false)
+
+  return (
+    <Button
+      variant='ghost'
+      onClick={async () => {
+        toast.loading('更新管理員中', {
+          id: `update-admin-${user.id}`,
+          duration: Infinity,
+        })
+        setLoading(true)
+        await toggleUserAdmin(user)
+        setLoading(false)
+        toast.dismiss(`update-admin-${user.id}`)
+        toast.success('更新成功')
+      }}
+      disabled={user.isCurrent || loading}
+      className='m-0 p-2'
+    >
+      {user.admin ? <UserCheck size={18} /> : <UserX size={18} />}
+    </Button>
+  )
+}
+
+function VerificationCheckBox({ user }: { user: FullUser }) {
+  const [optimisticVerified, setOptimisticVerified] = useState(user.verified)
+  const [loading, setLoading] = useState(false)
+
+  return (
+    <>
+      <Checkbox
+        checked={optimisticVerified}
+        onCheckedChange={async () => {
+          toast.loading(
+            `帳號 ${user.displayName} ${user.verified ? '取消' : ''}驗證中`,
+            {
+              id: `update-verified-${user.id}`,
+              duration: Infinity,
+            },
+          )
+          setLoading(true)
+          setOptimisticVerified(!optimisticVerified)
+          const verified = await toggleUserVerified(user)
+          setLoading(false)
+          toast.dismiss(`update-verified-${user.id}`)
+          setOptimisticVerified(verified)
+          toast.success(`${user.displayName} 驗證修改成功`)
+        }}
+        disabled={loading}
+      />
+      <Label>{optimisticVerified ? '已驗證' : '未驗證'}</Label>
+    </>
+  )
+}
 
 function NewUserDialog() {
   const [open, setOpen] = useState(false)
@@ -198,35 +237,35 @@ function NewUserDialog() {
               toast.success('帳號已新增')
             })
           }}
-          className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+          className='mt-10 grid grid-cols-6 items-center justify-between gap-8'
         >
           <Label className='col-span-3'>帳號</Label>
           <input
             type='text'
             name='email'
-            className='w-full p-2 border border-slate-300 rounded col-span-3'
+            className='col-span-3 w-full rounded border border-slate-300 p-2'
           />
           <Label className='col-span-3'>密碼</Label>
           <input
             type='text'
             name='password'
-            className='w-full p-2 border border-slate-300 rounded col-span-3'
+            className='col-span-3 w-full rounded border border-slate-300 p-2'
           />
           <Label className='col-span-3'>顯示名稱</Label>
           <input
             type='text'
             name='displayName'
-            className='w-full p-2 border border-slate-300 rounded col-span-3'
+            className='col-span-3 w-full rounded border border-slate-300 p-2'
           />
           <Label className='col-span-3'>真實姓名</Label>
           <input
             type='text'
             name='realName'
-            className='w-full p-2 border border-slate-300 rounded col-span-3'
+            className='col-span-3 w-full rounded border border-slate-300 p-2'
           />
           <Label className='col-span-3'>角色</Label>
           <Select name='userRole'>
-            <SelectTrigger className='w-[180px] col-span-3'>
+            <SelectTrigger className='col-span-3 w-[180px]'>
               <SelectValue placeholder='請選擇' />
             </SelectTrigger>
             <SelectContent>
@@ -280,25 +319,25 @@ function EditUserDialog({ user }: { user: FullUser }) {
                   toast.success('帳號資料已更新')
                 })
               }}
-              className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+              className='mt-10 grid grid-cols-6 items-center justify-between gap-8'
             >
               <Label className='col-span-3'>顯示名稱</Label>
               <input
                 type='text'
                 name='displayName'
-                className='w-full p-2 border border-slate-300 rounded col-span-3'
+                className='col-span-3 w-full rounded border border-slate-300 p-2'
                 defaultValue={user.displayName || ''}
               />
               <Label className='col-span-3'>真實姓名</Label>
               <input
                 type='text'
                 name='realName'
-                className='w-full p-2 border border-slate-300 rounded col-span-3'
+                className='col-span-3 w-full rounded border border-slate-300 p-2'
                 defaultValue={user.realName || ''}
               />
               <Label className='col-span-3'>角色</Label>
               <Select name='userRole' defaultValue={user.userRole || undefined}>
-                <SelectTrigger className='w-[180px] col-span-3'>
+                <SelectTrigger className='col-span-3 w-[180px]'>
                   <SelectValue placeholder='請選擇' />
                 </SelectTrigger>
                 <SelectContent>
@@ -314,7 +353,7 @@ function EditUserDialog({ user }: { user: FullUser }) {
                     name='teamType'
                     defaultValue={user.teamType || undefined}
                   >
-                    <SelectTrigger className='w-[180px] col-span-3'>
+                    <SelectTrigger className='col-span-3 w-[180px]'>
                       <SelectValue placeholder='請選擇' />
                     </SelectTrigger>
                     <SelectContent>
@@ -342,13 +381,13 @@ function EditUserDialog({ user }: { user: FullUser }) {
                   }
                 })
               }}
-              className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+              className='mt-10 grid grid-cols-6 items-center justify-between gap-8'
             >
               <Label className='col-span-3'>新密碼</Label>
               <input
                 type='text'
                 name='password'
-                className='w-full p-2 border border-slate-300 rounded col-span-3'
+                className='col-span-3 w-full rounded border border-slate-300 p-2'
               />
               <DialogFooter className='col-span-6'>
                 <SubmitBtn name='確定' className='w-40' />
@@ -396,12 +435,12 @@ function BalanceDialog({ user }: { user: FullUser }) {
               action={(formData: FormData) => {
                 setUserBalance(
                   user,
-                  formData.get('balance') as unknown as number
+                  formData.get('balance') as unknown as number,
                 )
                   .then(() => setOpen(false))
                   .finally(() => toast.success('帳戶餘額已更新'))
               }}
-              className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+              className='mt-10 grid grid-cols-6 items-center justify-between gap-8'
             >
               <Label className='col-span-3'>原餘額</Label>
               <Label className='col-span-3 text-right'>
@@ -411,9 +450,9 @@ function BalanceDialog({ user }: { user: FullUser }) {
               <input
                 type='number'
                 name='balance'
-                className='w-full p-2 border border-slate-300 rounded col-span-2'
+                className='col-span-2 w-full rounded border border-slate-300 p-2'
               />
-              <DialogFooter className='mt-5 col-span-6'>
+              <DialogFooter className='col-span-6 mt-5'>
                 <SubmitBtn name='確定' className='w-40' />
               </DialogFooter>
             </form>
@@ -424,12 +463,12 @@ function BalanceDialog({ user }: { user: FullUser }) {
                 adjustUserBalance(
                   user,
                   formData.get('amount') as unknown as number,
-                  addRef.current?.ariaChecked == 'true'
+                  addRef.current?.ariaChecked == 'true',
                 )
                   .then(() => setOpen(false))
                   .finally(() => toast.success('帳戶餘額已調整'))
               }}
-              className='grid grid-cols-6 justify-between items-center gap-8 mt-10'
+              className='mt-10 grid grid-cols-6 items-center justify-between gap-8'
             >
               <Label className='col-span-3'>原餘額</Label>
               <Label className='col-span-3 text-right'>
@@ -438,7 +477,7 @@ function BalanceDialog({ user }: { user: FullUser }) {
               <Label className='col-span-2'>新增或減少</Label>
               <RadioGroup
                 defaultValue='add'
-                className='col-span-2 grid grid-cols-2 justify-start items-center gap-2'
+                className='col-span-2 grid grid-cols-2 items-center justify-start gap-2'
                 name='add'
               >
                 <RadioGroupItem value='add' ref={addRef} />
@@ -449,7 +488,7 @@ function BalanceDialog({ user }: { user: FullUser }) {
               <input
                 type='number'
                 name='amount'
-                className='w-full p-2 border border-slate-300 rounded col-span-2'
+                className='col-span-2 w-full rounded border border-slate-300 p-2'
                 onChange={(e) => {
                   setAdjustedBalance(e.target.value)
                 }}
@@ -459,10 +498,10 @@ function BalanceDialog({ user }: { user: FullUser }) {
                 {currencyFormatter.format(
                   user.balance +
                     (parseInt(adjustedBalance) *
-                      (addRef.current?.ariaChecked == 'true' ? 1 : -1) || 0)
+                      (addRef.current?.ariaChecked == 'true' ? 1 : -1) || 0),
                 )}
               </Label>
-              <DialogFooter className='mt-5 col-span-6'>
+              <DialogFooter className='col-span-6 mt-5'>
                 <SubmitBtn name='確定' className='w-40' />
               </DialogFooter>
             </form>

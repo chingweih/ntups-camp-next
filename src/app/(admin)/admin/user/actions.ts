@@ -59,7 +59,7 @@ export async function toggleUserAdmin(user: FullUser | null) {
 
 export async function setUserBalance(
   user: FullUser | null,
-  newBalance: number
+  newBalance: number,
 ) {
   if (!user) {
     return false
@@ -83,7 +83,7 @@ export async function setUserBalance(
 export async function adjustUserBalance(
   user: FullUser | null,
   amount: number,
-  add: boolean
+  add: boolean,
 ) {
   if (!user || !user.email) {
     return false
@@ -118,7 +118,7 @@ export async function adjustUserBalance(
 
 export async function changeUserPassword(
   user: FullUser | null,
-  password: string
+  password: string,
 ) {
   if (!user) {
     return false
@@ -200,7 +200,7 @@ export async function newUser(props: NewUser) {
 }
 
 export async function deleteUser(user: FullUser | null) {
-  if (!user) {
+  if (!user || user.isCurrent) {
     return false
   }
 
@@ -210,7 +210,7 @@ export async function deleteUser(user: FullUser | null) {
     .eq('id', user.id)
 
   const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(
-    user.id
+    user.id,
   )
 
   if (dbError || authError) {

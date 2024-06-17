@@ -102,12 +102,8 @@ export function FcmInit({
       getToken(messaging, { vapidKey: vapidKey })
         .then((currentToken) => {
           if (currentToken) {
-            console.log('currentToken: ', currentToken)
             setToken(currentToken)
           } else {
-            console.log(
-              'No registration token available. Request permission to generate one.',
-            )
           }
         })
         .catch((err) => {

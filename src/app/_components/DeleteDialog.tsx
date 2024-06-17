@@ -16,9 +16,11 @@ import Spinner from './LoadingSpinner'
 export default function DeleteDialog({
   onClick,
   title,
+  disabled = false,
 }: {
   onClick: () => Promise<boolean>
   title: string
+  disabled?: boolean
 }) {
   const [open, setOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
@@ -26,7 +28,11 @@ export default function DeleteDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant='ghost' className='m-0 p-2 text-red-500'>
+        <Button
+          variant='ghost'
+          className='m-0 p-2 text-red-500'
+          disabled={disabled}
+        >
           <Trash size={18} />
         </Button>
       </DialogTrigger>

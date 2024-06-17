@@ -37,7 +37,6 @@ export default function PostEditForm({ post }: { post: Tables<'posts'> }) {
     ]),
   )
 
-  console.log(content)
   const router = useRouter()
 
   return (

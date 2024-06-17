@@ -76,11 +76,12 @@ export default function RootLayout({
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
-          inter.variable
+          inter.variable,
         )}
         style={{ backgroundColor: colors.pageBackground }}
       >
-        <div className='container flex justify-center items-start p-5 pt-3'>
+        {process.env.DEMO_MODE! === '1' ? 'DEMO MODE' : null}
+        <div className='container flex items-start justify-center p-5 pt-3'>
           {children}
         </div>
         <Toaster />

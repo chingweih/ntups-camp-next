@@ -53,7 +53,7 @@ import {
 import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { deleteTask, newTask, updateTask } from './actions'
+import { deleteTask, deleteUserUploads, newTask, updateTask } from './actions'
 import { cn } from '@/lib/utils'
 
 export type TasksWithFiles = Tables<'tasks'> & {
@@ -226,14 +226,32 @@ function TaskRow({ task }: { task: TasksWithFiles }) {
                         最後上傳時間：
                         {getDateString(file.file.created_at)}
                       </p>
-                      <Button variant='link' className='w-1/6'>
-                        <Link
-                          href={`/admin/task/download/${file.file.file_url}`}
-                          target='_blank'
-                        >
-                          下載
-                        </Link>
-                      </Button>
+                      <div className='flex flex-row items-center gap-3'>
+                        <Button variant='link' className='w-1/6'>
+                          <Link
+                            href={`/admin/task/download/${file.file.file_url}`}
+                            target='_blank'
+                          >
+                            下載
+                          </Link>
+                        </Button>
+                        <DeleteDialog
+                          title={`確定要刪除 ${file.user?.displayName} 上傳的所有 ${task.name} 嗎？`}
+                          onClick={() =>
+                            deleteUserUploads(
+                              file.user?.email || '',
+                              task.id,
+                            ).then((result) => {
+                              if (result) {
+                                toast.success('已刪除')
+                              } else {
+                                toast.error('刪除失敗')
+                              }
+                              return result
+                            })
+                          }
+                        />
+                      </div>
                     </div>
                   </TableCell>
                 </TableRow>

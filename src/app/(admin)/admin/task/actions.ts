@@ -43,3 +43,22 @@ export async function newTask(data: TablesInsert<'tasks'>) {
 
   return true
 }
+
+export async function deleteUserUploads(userEmail: string, taskId: number) {
+  if (userEmail === '') {
+    return false
+  }
+
+  const { error } = await supabaseAdmin
+    .from('uploads')
+    .delete()
+    .match({ user_email: userEmail, task_id: taskId })
+
+  if (error) {
+    console.error('error', error)
+    return false
+  }
+
+  revalidatePath('/admin/task')
+  return true
+}

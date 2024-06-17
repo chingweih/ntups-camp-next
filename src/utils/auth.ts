@@ -19,6 +19,7 @@ export async function getUser(): Promise<{
   userName: string | null
   isAdmin: boolean
   teamType: string | null
+  verified: boolean
 }> {
   const supabase = createClient()
   const {
@@ -30,6 +31,7 @@ export async function getUser(): Promise<{
     userName: user?.email?.split('@')[0] || null,
     isAdmin: await checkUserAdmin(user),
     teamType: await getUserTeamType(user),
+    verified: await checkUserVerified(user),
   }
 }
 

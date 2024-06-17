@@ -53,27 +53,33 @@ export async function updateSession(request: NextRequest) {
           })
         },
       },
-    }
+    },
   )
 
   // refreshing the auth token
   await supabase.auth.getUser()
 
-  const { user, isAdmin } = await getUser()
+  const { user, isAdmin, verified } = await getUser()
   if (request.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
     if (user) {
       return NextResponse.redirect(new URL('/', request.url))
     } else {
       return NextResponse.redirect(
-        new URL(`/login?next=${request.nextUrl.pathname}`, request.url)
+        new URL(`/login?next=${request.nextUrl.pathname}`, request.url),
       )
     }
   }
 
-  if (isProtectedRoute(request.nextUrl) && !user) {
-    return NextResponse.redirect(
-      new URL(`/login?next=${request.nextUrl.pathname}`, request.url)
-    )
+  if (isProtectedRoute(request.nextUrl)) {
+    if (!user) {
+      return NextResponse.redirect(
+        new URL(`/login?next=${request.nextUrl.pathname}`, request.url),
+      )
+    }
+
+    if (!verified) {
+      return NextResponse.redirect(new URL('/error/not-verified', request.url))
+    }
   }
 
   return response
