@@ -6,14 +6,8 @@ import { supabaseAdmin } from '@/utils/supabase/admin'
 import { generateHTML } from '@tiptap/html'
 import { revalidatePath } from 'next/cache'
 
-import Bold from '@tiptap/extension-bold'
-import CodeBlock from '@tiptap/extension-code-block'
-import Document from '@tiptap/extension-document'
-import Heading from '@tiptap/extension-heading'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
-import Image from '@tiptap/extension-image'
 import { JSONContent } from 'novel'
+import { customExtensions } from './tiptap-extensions'
 
 export async function deletePost(id: number) {
   const { error } = await supabaseAdmin.from('posts').delete().eq('id', id)
@@ -73,15 +67,7 @@ export async function updatePost(
     postJson.content = parsedContents
   }
 
-  const html = generateHTML(postJson, [
-    Document,
-    Paragraph,
-    Text,
-    CodeBlock,
-    Heading,
-    Bold,
-    Image,
-  ])
+  const html = generateHTML(postJson, customExtensions)
 
   const { error } = await supabaseAdmin
     .from('posts')

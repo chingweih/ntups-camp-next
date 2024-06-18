@@ -24,17 +24,11 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeftFromLine } from 'lucide-react'
+import { customExtensions } from '../../tiptap-extensions'
 
 export default function PostEditForm({ post }: { post: Tables<'posts'> }) {
   const [content, setContent] = useState<JSONContent>(
-    generateJSON(post.contents, [
-      Document,
-      Paragraph,
-      Text,
-      CodeBlock,
-      Heading,
-      Image,
-    ]),
+    generateJSON(post.contents, customExtensions),
   )
 
   const router = useRouter()
