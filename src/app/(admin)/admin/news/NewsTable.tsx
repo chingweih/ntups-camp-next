@@ -28,9 +28,9 @@ import { deletePost, newPost } from './actions'
 const columns: ColumnDef<Tables<'posts'>>[] = [
   {
     id: 'drag-handle',
-    header: '移動',
+    header: '排序',
     cell: ({ row }) => <RowDragHandleCell rowId={row.id.toString()} />,
-    size: 60,
+    size: 30,
   },
   {
     accessorKey: 'created_at',
@@ -38,7 +38,7 @@ const columns: ColumnDef<Tables<'posts'>>[] = [
     cell: ({ row }) => {
       return getDateString(row.original.created_at)
     },
-    size: 150,
+    size: 100,
   },
   {
     accessorKey: 'tag',
@@ -63,14 +63,19 @@ const columns: ColumnDef<Tables<'posts'>>[] = [
         </div>
       )
     },
-    size: 250,
+    size: 225,
   },
   {
     id: 'actions',
     header: '操作',
     cell: ({ row }) => {
       return (
-        <div className='flex space-x-1'>
+        <div className='flex'>
+          <Button asChild variant='link'>
+            <Link href={`/news/${row.original.id}`} target='_blank'>
+              檢視
+            </Link>
+          </Button>
           <Button asChild variant='link'>
             <Link href={`/admin/news/edit/${row.original.id}`}>編輯</Link>
           </Button>
@@ -91,7 +96,7 @@ const columns: ColumnDef<Tables<'posts'>>[] = [
         </div>
       )
     },
-    size: 150,
+    size: 125,
   },
 ]
 
