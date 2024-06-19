@@ -19,7 +19,13 @@ export async function login(formData: FormData, next?: string | null) {
     return error.message
   }
 
-  const nextPath = next ? (next.startsWith('/') ? next : '/') : '/'
+  const nextPath = next
+    ? next.startsWith('//')
+      ? '/'
+      : next.startsWith('/')
+        ? next
+        : '/'
+    : '/'
 
   revalidatePath(nextPath, 'layout')
   redirect(nextPath)
