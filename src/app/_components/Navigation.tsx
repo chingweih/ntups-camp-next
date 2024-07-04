@@ -6,7 +6,7 @@ import Link from 'next/link'
 export default function Navigation() {
   return (
     <div
-      className='sticky top-0 pt-5 pb-5 z-50 mb-3'
+      className='sticky top-0 z-50 mb-3 pb-5 pt-5'
       style={{ backgroundColor: '#fffefc' }}
     >
       <div className='flex h-5 items-center justify-between text-sm'>
@@ -24,7 +24,7 @@ export default function Navigation() {
         <Separator orientation='vertical' />
         <Button variant='ghost' asChild>
           <Link href='/news'>
-            <Newspaper className='pr-2' /> 新聞
+            <Newspaper className='pr-2' /> 串文
           </Link>
         </Button>
         <Separator orientation='vertical' />

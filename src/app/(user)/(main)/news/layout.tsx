@@ -2,8 +2,8 @@ import { type Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: {
-    template: '%s｜政治營新聞',
-    default: '新聞',
+    template: '%s｜政治營串',
+    default: '串文',
   },
 }
 

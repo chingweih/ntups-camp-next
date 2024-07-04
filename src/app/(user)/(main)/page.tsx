@@ -37,7 +37,7 @@ export default async function Home() {
       <div className='mb-5 flex flex-row items-center justify-between'>
         <h1 className='flex flex-row items-center justify-between gap-3 text-2xl font-bold'>
           <Newspaper size={24} />
-          最新新聞
+          最新串文
         </h1>
         <Button variant='link' asChild>
           <Link href='/news'>
