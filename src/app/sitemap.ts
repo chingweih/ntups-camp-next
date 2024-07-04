@@ -3,8 +3,7 @@ import { getPosts } from './(user)/(main)/news/page'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPosts()
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || 'https://ntupscamp.ethanhuang.me'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ntupscamp.fun'
 
   const postIds =
     posts?.map((post) => {

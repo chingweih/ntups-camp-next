@@ -15,7 +15,7 @@ const APP_DESCRIPTION = 'July 15-19｜2024 模擬選戰'
 const APP_TITLE_TEMPLATE = '%s | 臺大政治營'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ntupscamp.ethanhuang.me'),
+  metadataBase: new URL('https://ntupscamp.fun'),
   title: {
     template: APP_TITLE_TEMPLATE,
     default: APP_DEFAULT_TITLE,
