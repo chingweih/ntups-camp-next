@@ -11,12 +11,14 @@ export default function SubmitBtn({
   submit = true,
   onClick,
   loadingText,
+  variant = 'default',
 }: {
   name: string | React.ReactNode
   className?: string
   submit?: boolean
   onClick?: () => void
   loadingText?: string
+  variant?: 'default' | 'outline'
 }) {
   const { pending } = useFormStatus()
   return (
@@ -25,7 +27,7 @@ export default function SubmitBtn({
         className='w-full'
         type={submit ? 'submit' : 'button'}
         disabled={pending}
-        variant={pending ? 'ghost' : 'default'}
+        variant={pending ? 'ghost' : variant}
         onClick={onClick || (() => {})}
       >
         {pending ? (

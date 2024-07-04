@@ -37,6 +37,7 @@ export default function UploadActions({
         ) : (
           <UploadButton
             taskId={taskId}
+            hasFile={Boolean(fileUrlState)}
             setFileUrlState={setFileUrlState}
             setCreatedAtState={setCreatedAtState}
           />
@@ -83,10 +84,12 @@ export default function UploadActions({
 
 function UploadButton({
   taskId,
+  hasFile,
   setFileUrlState,
   setCreatedAtState,
 }: {
   taskId: number
+  hasFile: boolean
   setFileUrlState: Dispatch<SetStateAction<string | null>>
   setCreatedAtState: Dispatch<SetStateAction<string | null>>
 }) {
@@ -112,12 +115,13 @@ function UploadButton({
       <SubmitBtn
         name={
           <>
-            <UploadIcon className='pr-1' /> 上傳
+            <UploadIcon className='pr-1' /> {hasFile ? '重新' : ''}上傳
           </>
         }
         onClick={() => inputRef.current?.click()}
         submit={false}
         loadingText='上傳中⋯'
+        variant={hasFile ? 'outline' : 'default'}
       />
       <Input
         type='file'
