@@ -1,47 +1,44 @@
-# NTU-PS-Camp App (for EVERYTHING, hopefully)
+# NTU-PS-Camp App 2024
 
 Using Next.js + Typescript Stack for the first time!
 
 Expected Functionalities:
 
 - [x] Home (/)
-  - [ ] Summary:
-    - [ ] Itinerary
-    - [ ] Bank dashboard
-    - [ ] Latest post
-    - [ ] Recent uploads
+  - [x] Summary:
+    - [x] Bank dashboard
+    - [x] Latest post
+    - [x] Recent uploads
   - [ ] PWA Install Prompt
-- [ ] Bank (/bank)
+- [x] Bank (/bank)
   - [x] Balance
   - [x] Transfer
-  - [ ] Details?
-- [ ] Upload files (/upload)
-- [ ] Posts/News (/news)
-- [ ] Voting?
-  - [ ] Real-time DB?
-- [ ] Auth
-  - [ ] Sign-Up Function (for staff)
-- [ ] Admin Dashboard
-  - [ ] User Table
-    - [ ] Create/Delete users
-    - [ ] Change/Reset passwords
-    - [ ] Verify staff account
-    - [ ] Bank
-      - [ ] Modify Balances (admin insert a new row with certain notes: e.g. "系統調整")
-      - [ ] List of transactions
-  - [ ] Upload
-    - [ ] Set files requirements
-    - [ ] See uploaded files & created time
+- [x] Upload files (/upload)
+- [x] Posts/News (/news)
+- [x] Voting? [repo](https://github.com/chingweih/ntups-camp-voting-vite)
+- [x] Admin Dashboard
+  - [x] User Table
+    - [x] Create/Delete users
+    - [x] Change/Reset passwords
+    - [x] Verify staff account
+    - [x] Bank
+      - [x] Modify Balances (admin insert a new row with certain notes: e.g. "系統調整")
+      - [x] List of transactions
+  - [x] Upload
+    - [x] Set files requirements
+    - [x] See uploaded files & created time
+  - [x] Send push notifications
 - [ ] PWA
-  - [ ] Configuration
-    - [?] Service Worker (next-pwa, half working?)
-    - [?] Manifest.json (working, but doesn't have a proper logo)
-  - [ ] Push notifications (supabase + firebase)
+  - [x] Configuration
+    - [x] Service Worker (Serwist)
+    - [x] Manifest.json
+  - [x] Push notifications (FCM)
+    - [x] Send from admin panel
+    - [ ] Connect to bank transfer
 
 TODOs:
 
 - [x] Deploy to **Vercel**
-  - [ ] May switch to **Cloudflare Page** when done
 - [x] UI & Pages
   - [x] Shadcn/UI
 - [x] Tidy build process (ignore eslint on build)
@@ -53,9 +50,9 @@ TODOs:
   - [x] Magic files: loading, not-found and /error
   - [x] Change supabase env to not be exposed
   - [x] Add 2nd layer of verification to db query calls (e.g. `user.email == from_email`, etc..)
-- [ ] Set up Storage (**Supabase** Storage)
-- [ ] Postgres RLS on supabase
-- [ ] Supabase CLI: Generate db types
+- [x] Set up Storage (**Supabase** Storage)
+- [x] Postgres RLS on supabase
+- [x] Supabase CLI: Generate db types
   - [ ] Github Action automation
 - [ ] Dev Tools (Maybe)
   - [ ] Sentry for error management
