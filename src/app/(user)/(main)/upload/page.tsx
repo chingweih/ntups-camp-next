@@ -78,8 +78,9 @@ export async function TaskList({ tasks }: { tasks: Tasks | null }) {
                 </CardDescription>
               </div>
               <p className={cn('text-bold col-span-2 text-sm')}>
-                <span className='whitespace-nowrap'>截止時間：</span>
-                <span className='whitespace-nowrap'>{dueDtString}</span>
+                截止時間：
+                <br />
+                {dueDtString}
               </p>
               <UploadActions
                 taskId={task.id}
