@@ -13,7 +13,7 @@ export default function LoginPage() {
   return (
     <>
       <LoginForm login={(formData) => login(formData, next ? next : null)} />
-      <Button asChild className='w-full mt-3' variant='link'>
+      <Button asChild className='mt-3 w-full' variant='link'>
         <Link href='/'>回首頁</Link>
       </Button>
     </>

@@ -14,5 +14,17 @@ export default async function Login() {
     redirect('/')
   }
 
-  return <LoginPage />
+  return (
+    <>
+      <LoginPage />
+      {process.env.DEMO_MODE === '1' ? (
+        <p className='mt-3 w-full rounded-md bg-slate-300 p-5 font-mono text-sm'>
+          DEMO MODE: <br />
+          (1) Username: Admin / Password: password
+          <br />
+          (2) Username: Ethan / Password: ethanhuang
+        </p>
+      ) : null}
+    </>
+  )
 }
