@@ -20,9 +20,9 @@ export default async function Login() {
       {process.env.DEMO_MODE === '1' ? (
         <p className='mt-3 w-full rounded-md bg-slate-300 p-5 font-mono text-sm'>
           DEMO MODE: <br />
-          (1) Username: Admin / Password: password
+          (1) Username: admin / Password: password
           <br />
-          (2) Username: Ethan / Password: ethanhuang
+          (2) Username: team-group / Password: group
         </p>
       ) : null}
     </>
