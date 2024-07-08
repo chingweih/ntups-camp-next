@@ -16,7 +16,7 @@ export type Transaction = {
 
 export async function insertTransaction(
   { from_email, to_email, amount, notes }: Transaction,
-  user: User
+  user: User,
 ) {
   if (amount <= 0) {
     return '金額必須大於 0'
@@ -39,7 +39,7 @@ export async function insertTransaction(
   const supabase = createClient()
   const { error } = await supabase.from('transactions').insert({
     from_email: from_email,
-    to_email: `${to_email}@${process.env.ACCOUNT_DOMAIN}`,
+    to_email: `${to_email.toLowerCase()}@${process.env.ACCOUNT_DOMAIN}`,
     amount: amount,
     notes: notes,
   })

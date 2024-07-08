@@ -61,6 +61,10 @@ export async function setUserBalance(
   user: FullUser | null,
   newBalance: number,
 ) {
+  if (newBalance > 2000000000) {
+    return false
+  }
+
   if (!user) {
     return false
   }
