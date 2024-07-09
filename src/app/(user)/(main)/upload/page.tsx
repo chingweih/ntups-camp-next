@@ -11,12 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { colors } from '@/lib/custom-colors'
 import { dtOptions, getDateString, locale } from '@/lib/dt-options'
 import { cn } from '@/lib/utils'
 import { getUser } from '@/utils/auth'
 import { Tables } from '@/utils/database.types'
 import { createClient } from '@/utils/supabase/server'
 import { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: '上傳',
@@ -45,6 +47,17 @@ export default async function UploadPage() {
               <li>系統僅會採用最後一次上傳的版本</li>
               <li>上傳完成後，請自行下載檔案確認內容完整、版本正確</li>
               <li>截止時間後，將不再開放上傳功能</li>
+              <li>
+                文件模板請見手冊 QRCode 或此
+                <Link
+                  href='/redirect/templates'
+                  className='underline'
+                  target='_blank'
+                  style={{ color: colors.primaryBlue }}
+                >
+                  連結
+                </Link>
+              </li>
             </ul>
           </AccordionContent>
         </AccordionItem>

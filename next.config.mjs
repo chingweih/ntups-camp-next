@@ -30,6 +30,12 @@ const nextConfig = {
         destination: '/admin/user',
         permanent: true,
       },
+      {
+        source: '/redirect/templates',
+        destination:
+          'https://drive.google.com/drive/folders/1DC3TW7Oual7wd_ivvwftuq9tn1pXyi5C?usp=sharing',
+        permanent: true,
+      },
     ]
   },
 }
