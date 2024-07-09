@@ -1,10 +1,12 @@
 'use server'
 import 'server-only'
 
+import { sendMessageToUsers } from '@/app/(admin)/admin/notification/actions'
+import { adminGetUserByEmail, getUserDisplayName } from '@/utils/auth'
 import { createClient } from '@/utils/supabase/server'
+import { type User } from '@supabase/supabase-js'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { type User } from '@supabase/supabase-js'
 import { getUserBalance } from './bank-quries'
 
 export type Transaction = {
@@ -47,6 +49,25 @@ export async function insertTransaction(
   if (error) {
     return '使用者不存在或其他錯誤'
   } else {
+    const to_user = await adminGetUserByEmail(
+      `${to_email.toLowerCase()}@${process.env.ACCOUNT_DOMAIN}`,
+    )
+    const from_user = await adminGetUserByEmail(from_email)
+
+    if (!to_user || !from_user) {
+      return '使用者不存在或其他錯誤'
+    }
+
+    sendMessageToUsers([from_user.id], {
+      title: '【政治營帳務通知】轉帳成功',
+      body: `已成功轉帳 ${amount} 元給 ${await getUserDisplayName(to_user)}${notes ? `（備註：${notes}）` : ''}`,
+    })
+
+    sendMessageToUsers([to_user.id], {
+      title: '【政治營帳務通知】入帳通知',
+      body: `${await getUserDisplayName(from_user)} 轉帳 ${amount} 元給你${notes ? `（備註：${notes}）` : ''}`,
+    })
+
     revalidatePath('/bank')
     redirect('/bank')
     return null

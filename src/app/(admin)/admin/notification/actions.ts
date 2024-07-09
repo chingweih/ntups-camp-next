@@ -47,3 +47,27 @@ export async function sendMessageToUsers(
     successCount: response.successCount,
   }
 }
+
+export async function sendMessageByEmail(
+  email: string,
+  message: {
+    title: string
+    body: string
+  },
+) {
+  const { data: user, error } = await supabaseAdmin
+    .from('users')
+    .select('id')
+    .eq('email', email)
+    .single()
+
+  if (error) {
+    throw error
+  }
+
+  if (!user) {
+    return
+  }
+
+  return sendMessageToUsers([user.id], message)
+}
