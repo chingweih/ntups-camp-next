@@ -102,7 +102,12 @@ export function DataTablePaging<TData, TValue>({
                   return (
                     <TableHead
                       key={header.id}
-                      style={{ width: header.column.getSize() }}
+                      style={{
+                        width: header.column.getSize(),
+                        textAlign:
+                          header.column.columnDef.meta?.style.textAlign ||
+                          'left',
+                      }}
                     >
                       {header.isPlaceholder
                         ? null
@@ -126,7 +131,11 @@ export function DataTablePaging<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      style={{ width: cell.column.getSize() }}
+                      style={{
+                        width: cell.column.getSize(),
+                        textAlign:
+                          cell.column.columnDef.meta?.style.textAlign || 'left',
+                      }}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

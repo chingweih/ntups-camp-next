@@ -60,14 +60,19 @@ const columns: ColumnDef<Tables<'transactions'>>[] = [
   {
     accessorKey: 'amount',
     header: '金額',
+    meta: {
+      style: {
+        textAlign: 'right',
+      },
+    },
     cell: ({ row }) => {
       return (
-        <span className='font-bold'>
+        <span className='font-mono font-bold'>
           {currencyFormatter.format(row.original.amount)}
         </span>
       )
     },
-    size: 60,
+    size: 50,
   },
   {
     accessorKey: 'notes',
