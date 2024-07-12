@@ -31,8 +31,8 @@ async function getAllTransactions() {
   return await Promise.all(
     data.map(async (transaction) => ({
       ...transaction,
-      from_email: `${await getUserDisplayNameByEmail(transaction.from_email)} (${transaction.from_email.split('@')[0]})`,
-      to_email: `${await getUserDisplayNameByEmail(transaction.to_email)} (${transaction.to_email.split('@')[0]})`,
+      from_email: `${await getUserDisplayNameByEmail(transaction.from_email)}||${transaction.from_email.split('@')[0]}`,
+      to_email: `${await getUserDisplayNameByEmail(transaction.to_email)}||${transaction.to_email.split('@')[0]}`,
     })),
   )
 }
