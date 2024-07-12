@@ -44,7 +44,7 @@ const columns: ColumnDef<Tables<'transactions'>>[] = [
     header: 'To',
     size: 120,
     cell: ({ row }) => {
-      const displayName = row.original.from_email.split('||')
+      const displayName = row.original.to_email.split('||')
 
       return (
         <>
