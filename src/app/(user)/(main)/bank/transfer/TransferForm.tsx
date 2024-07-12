@@ -11,8 +11,12 @@ import Link from 'next/link'
 import { useRef } from 'react'
 import { toast } from 'sonner'
 import { insertTransaction, type Transaction } from '../actions'
+import { useSearchParams } from 'next/navigation'
 
 export default function TransferForm({ user }: { user: User }) {
+  const searchParams = useSearchParams()
+  const paramTo = searchParams.get('to')
+
   const formRef = useRef<HTMLFormElement>(null)
   toast.dismiss('transfer-error')
 
@@ -47,9 +51,9 @@ export default function TransferForm({ user }: { user: User }) {
                 formRef.current?.reset()
               }
             }}
-            className='grid grid-cols-6 justify-between items-center gap-5'
+            className='grid grid-cols-6 items-center justify-between gap-5'
           >
-            <Label className='col-span-2 flex flex-row gap-1 items-center'>
+            <Label className='col-span-2 flex flex-row items-center gap-1'>
               轉出
             </Label>
             <Input
@@ -69,6 +73,9 @@ export default function TransferForm({ user }: { user: User }) {
               className='col-span-4'
               required
               name='to_email'
+              defaultValue={paramTo || ''}
+              readOnly={!!paramTo}
+              disabled={!!paramTo}
               autoCorrect='off'
               autoCapitalize='none'
               autoComplete='off'

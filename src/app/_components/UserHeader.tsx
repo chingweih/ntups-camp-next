@@ -5,14 +5,15 @@ import Link from 'next/link'
 import UserGreeting from './UserGreeting'
 import UserAvatar from './UserAvatar'
 import { Badge } from '@/components/ui/badge'
+import { QrCode } from 'lucide-react'
 
 export default async function UserHeader() {
   const { user, displayName: userDisplayName, isAdmin } = await getUser()
 
   return (
     <>
-      <div className='flex flex-row w-full gap-4 items-center justify-between sticky mb-6'>
-        <div className='flex flex-row gap-4 items-center'>
+      <div className='sticky mb-6 flex w-full flex-row items-center justify-between gap-4'>
+        <div className='flex flex-row items-center gap-4'>
           <UserAvatar user={user} userDisplayName={userDisplayName} />
           <UserGreeting user={user} displayName={userDisplayName} />
           {isAdmin ? (
@@ -24,7 +25,16 @@ export default async function UserHeader() {
           ) : null}
         </div>
         <div className='flex flex-row items-center justify-end'>
-          <RequestNotificationPermission user={user} />
+          {user ? (
+            <>
+              <Button variant='ghost' asChild className='p-2.5'>
+                <Link href='/qrcode'>
+                  <QrCode size={18} />
+                </Link>
+              </Button>
+              <RequestNotificationPermission user={user} />
+            </>
+          ) : null}
           <Button variant='link' asChild>
             {user ? (
               <Link href='/logout'>登出</Link>

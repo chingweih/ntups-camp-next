@@ -86,7 +86,7 @@ export async function updateSession(request: NextRequest) {
 }
 
 function isProtectedRoute(url: URL) {
-  const protectedRoutes = ['/bank', '/upload']
+  const protectedRoutes = ['/bank', '/upload', '/qrcode']
 
   return protectedRoutes.some((route) => url.pathname.startsWith(route))
 }
