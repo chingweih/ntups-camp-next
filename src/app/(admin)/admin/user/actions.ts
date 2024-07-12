@@ -4,6 +4,8 @@ import 'server-only'
 import { supabaseAdmin } from '@/utils/supabase/admin'
 import { revalidatePath } from 'next/cache'
 import { FullUser } from '@/utils/auth'
+import { sendMessageToUsers } from '../notification/actions'
+import { currencyFormatter, currencyFormatterWithSign } from '@/lib/formatters'
 
 export type NewUser = {
   email?: string
@@ -79,6 +81,11 @@ export async function setUserBalance(
     return false
   }
 
+  sendMessageToUsers([user.id], {
+    title: '【政治營帳務通知】帳戶調整',
+    body: `央行行庫 已將你的餘額調整為 ${currencyFormatter.format(newBalance)} 元`,
+  })
+
   revalidatePath('/admin/user')
 
   return data[0].balance || false
@@ -96,7 +103,7 @@ export async function adjustUserBalance(
   if (add) {
     const { data, error } = await supabaseAdmin.from('transactions').insert({
       amount: amount,
-      from_email: 'admin@bank.ethanhuang.me',
+      from_email: `admin@${process.env.ACCOUNT_DOMAIN}`,
       to_email: user.email,
       notes: '系統調整',
     })
@@ -108,7 +115,7 @@ export async function adjustUserBalance(
     const { data, error } = await supabaseAdmin.from('transactions').insert({
       amount: amount,
       from_email: user.email,
-      to_email: 'admin@bank.ethanhuang.me',
+      to_email: `admin@${process.env.ACCOUNT_DOMAIN}`,
       notes: '系統調整',
     })
 
@@ -116,6 +123,13 @@ export async function adjustUserBalance(
       return false
     }
   }
+
+  const amountWithSign = add ? amount : -amount
+
+  sendMessageToUsers([user.id], {
+    title: '【政治營帳務通知】帳戶調整',
+    body: `央行行庫 已在你的帳戶 ${currencyFormatterWithSign.format(amountWithSign)} 元`,
+  })
 
   revalidatePath('/admin/user')
 }
