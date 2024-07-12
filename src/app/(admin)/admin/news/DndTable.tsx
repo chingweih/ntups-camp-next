@@ -110,7 +110,7 @@ export function DndTable({ columns, data: ogData }: DataTableProps) {
       setData((data) => {
         return arrayMove(data, oldIndex, newIndex) //this is just a splice util
       })
-      toast.promise(updatePostOrder(data[oldIndex].id, newIndex), {
+      toast.promise(updatePostOrder(data[oldIndex].id, oldIndex, newIndex), {
         loading: '更新中...',
         success: '順序更新成功',
         error: '更新失敗',

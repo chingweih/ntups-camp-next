@@ -115,7 +115,11 @@ export async function newPost(data: TablesInsert<'posts'>) {
   return { id: id[0].id }
 }
 
-export async function updatePostOrder(postId: number, newIndex: number) {
+export async function updatePostOrder(
+  postId: number,
+  oldIndex: number,
+  newIndex: number,
+) {
   const { data, error } = await supabaseAdmin
     .from('posts')
     .select('id, order')
@@ -128,8 +132,23 @@ export async function updatePostOrder(postId: number, newIndex: number) {
 
   if (data[newIndex]?.id === postId) return
 
-  const newOrderBefore = newIndex == 0 ? 0 : data[newIndex - 1]?.order
-  const newOrderAfter = newIndex == data.length - 1 ? 0 : data[newIndex]?.order
+  let newOrderBefore, newOrderAfter
+
+  if (newIndex === 0) {
+    newOrderBefore = 0
+  } else if (oldIndex < newIndex) {
+    newOrderBefore = data[newIndex].order
+  } else {
+    newOrderBefore = data[newIndex - 1].order
+  }
+
+  if (newIndex === data.length - 1) {
+    newOrderAfter = 0
+  } else if (oldIndex < newIndex) {
+    newOrderAfter = data[newIndex + 1].order
+  } else {
+    newOrderAfter = data[newIndex].order
+  }
 
   let newOrder = 0
 
