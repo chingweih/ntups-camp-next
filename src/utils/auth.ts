@@ -205,7 +205,7 @@ export async function getUserDisplayNameByEmail(email: string) {
     .eq('email', email)
     .single()
 
-  if (error || !data) {
+  if (error || !data || !data.display_name) {
     return email[0].toUpperCase() + email.split('@')[0].slice(1)
   }
 

@@ -1,10 +1,16 @@
 import { supabaseAdmin } from '@/utils/supabase/admin'
 import TransactionTable from './TransactionTable'
+import { getUserDisplayNameByEmail } from '@/utils/auth'
 
 export default async function TransactionPage() {
   const transactions = await getAllTransactions()
 
-  return <TransactionTable transactions={transactions} />
+  return (
+    <>
+      <h2 className='text-lg font-bold'>交易紀錄</h2>
+      <TransactionTable transactions={transactions} />
+    </>
+  )
 }
 
 async function getAllTransactions() {
@@ -22,5 +28,11 @@ async function getAllTransactions() {
     return []
   }
 
-  return data
+  return await Promise.all(
+    data.map(async (transaction) => ({
+      ...transaction,
+      from_email: `${await getUserDisplayNameByEmail(transaction.from_email)} (${transaction.from_email.split('@')[0]})`,
+      to_email: `${await getUserDisplayNameByEmail(transaction.to_email)} (${transaction.to_email.split('@')[0]})`,
+    })),
+  )
 }
