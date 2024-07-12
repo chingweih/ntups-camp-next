@@ -47,8 +47,12 @@ export function DataTablePaging<TData, TValue>({
     <>
       <div className='flex items-center justify-end space-x-2 py-4'>
         <div className='flex-1 text-sm text-muted-foreground'>
-          第 {table.getState().pagination.pageIndex + 1} 頁 / 共{' '}
-          {table.getPageCount()} 頁
+          <span className='whitespace-nowrap'>
+            第 {table.getState().pagination.pageIndex + 1} 頁
+          </span>{' '}
+          <span className='whitespace-nowrap'>
+            / 共 {table.getPageCount()} 頁
+          </span>
         </div>
         <div className='flex flex-row items-center justify-center space-x-2'>
           <Button

@@ -1,15 +1,6 @@
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+import AdminLink from '@/app/_components/AdminLink'
 import { colors } from '@/lib/custom-colors'
-import {
-  Bell,
-  Landmark,
-  LucideProps,
-  Newspaper,
-  Upload,
-  User,
-} from 'lucide-react'
-import Link from 'next/link'
+import { Bell, Landmark, Newspaper, Upload, User } from 'lucide-react'
 import React from 'react'
 
 export default async function AdminPanel({
@@ -18,50 +9,33 @@ export default async function AdminPanel({
   children: React.ReactNode
 }) {
   return (
-    <div className='flex flex-row items-start justify-between w-full gap-5'>
+    <div className='flex w-full flex-col items-start justify-between gap-10 sm:flex-row'>
       <div
-        className='w-2/12 flex flex-col items-center justify-center gap-3 rounded p-5 text-white'
+        className='sticky top-5 z-50 flex w-full flex-row items-center justify-center rounded-full p-2 text-white shadow-sm shadow-slate-300 sm:top-8 sm:w-2/12 sm:flex-col sm:gap-3 sm:rounded sm:p-5 sm:shadow-none'
         style={{ backgroundColor: colors.primaryBlue }}
       >
-        <AdminLink href='/admin/user' Icon={User}>
-          帳號管理
+        <AdminLink href='/admin/user'>
+          <User size={18} className='mr-1 sm:mr-2' />
+          帳號<span className='hidden md:inline'>管理</span>
         </AdminLink>
-        <AdminLink href='/admin/transaction' Icon={Landmark}>
-          交易紀錄
+        <AdminLink href='/admin/transaction'>
+          <Landmark size={18} className='mr-1 sm:mr-2' />
+          交易<span className='hidden md:inline'>紀錄</span>
         </AdminLink>
-        <AdminLink href='/admin/news' Icon={Newspaper}>
-          文章管理
+        <AdminLink href='/admin/news'>
+          <Newspaper size={18} className='mr-1 sm:mr-2' />
+          文章<span className='hidden md:inline'>管理</span>
         </AdminLink>
-        <AdminLink href='/admin/task' Icon={Upload}>
-          文件管理
+        <AdminLink href='/admin/task'>
+          <Upload size={18} className='mr-1 sm:mr-2' />
+          文件<span className='hidden md:inline'>管理</span>
         </AdminLink>
-        <AdminLink href='/admin/notification' Icon={Bell}>
-          發送通知
+        <AdminLink href='/admin/notification'>
+          <Bell size={18} className='mr-1 sm:mr-2' />
+          <span className='hidden md:inline'>發送</span>通知
         </AdminLink>
       </div>
-      <Separator orientation='vertical' />
-      <div className='w-10/12'>{children}</div>
+      <div className='w-full sm:w-10/12'>{children}</div>
     </div>
-  )
-}
-
-function AdminLink({
-  href,
-  Icon,
-  children,
-}: {
-  href: string
-  Icon: React.ForwardRefExoticComponent<
-    Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
-  >
-  children: React.ReactNode
-}) {
-  return (
-    <Button asChild variant='link' className='text-white'>
-      <Link href={href}>
-        <Icon size={18} className='mr-2' />
-        {children}
-      </Link>
-    </Button>
   )
 }
