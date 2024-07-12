@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/reset-post-order-index",
+      "schedule": "0 19 * * *"
+    }
+  ]
+}
