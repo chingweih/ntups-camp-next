@@ -75,7 +75,6 @@ export default function TransferForm({ user }: { user: User }) {
               name='to_email'
               defaultValue={paramTo || ''}
               readOnly={!!paramTo}
-              disabled={!!paramTo}
               autoCorrect='off'
               autoCapitalize='none'
               autoComplete='off'
