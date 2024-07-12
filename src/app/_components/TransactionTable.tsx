@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { getDateString } from '@/lib/dt-options'
+import { getUserDisplayNameByEmail } from '@/utils/auth'
 
 export function TransactionTable({
   transactions,
@@ -47,13 +48,10 @@ function TransactionRow({ transactions }: { transactions: Transaction[] }) {
   return transactions.map((transaction) => (
     <React.Fragment key={transaction.timestamp}>
       <TableRow className={transaction.notes ? '' : 'border-b'}>
-        <TableCell className='font-medium'>
+        <TableCell className='w-[20px] font-medium'>
           {getDateString(transaction.timestamp)}
         </TableCell>
-        <TableCell>
-          {transaction.to_from[0].toUpperCase() +
-            transaction.to_from.split('@')[0].slice(1)}
-        </TableCell>
+        <TableCell>{getUserDisplayNameByEmail(transaction.to_from)}</TableCell>
         <TableCell
           className={
             'text-right ' +

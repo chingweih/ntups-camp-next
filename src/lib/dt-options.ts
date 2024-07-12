@@ -15,7 +15,7 @@ export function getDateString(
   withSeconds: boolean = false,
 ) {
   const dt = timestamp ? new Date(timestamp) : new Date()
-  return format(dt, 'Asia/Taipei', `MM/dd, HH:mm${withSeconds ? ':ss' : ''}`)
+  return format(dt, 'Asia/Taipei', `MM/dd HH:mm${withSeconds ? ':ss' : ''}`)
 }
 
 export function timePassed(timestamp: string) {

@@ -197,3 +197,17 @@ export async function adminGetUserByEmail(email: string) {
 
   return getFullUser(userData.user)
 }
+
+export async function getUserDisplayNameByEmail(email: string) {
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .select('display_name')
+    .eq('email', email)
+    .single()
+
+  if (error || !data) {
+    return email[0].toUpperCase() + email.split('@')[0].slice(1)
+  }
+
+  return data.display_name
+}
