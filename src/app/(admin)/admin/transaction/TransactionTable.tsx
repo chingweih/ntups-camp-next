@@ -6,6 +6,7 @@ import { getDateString } from '@/lib/dt-options'
 import { currencyFormatter } from '@/lib/formatters'
 import { Tables } from '@/utils/database.types'
 import { ColumnDef } from '@tanstack/react-table'
+import { Wrench } from 'lucide-react'
 
 const columns: ColumnDef<Tables<'transactions'>>[] = [
   {
@@ -78,6 +79,19 @@ const columns: ColumnDef<Tables<'transactions'>>[] = [
     accessorKey: 'notes',
     header: '備註',
     size: 120,
+    cell: ({ row }) => {
+      const notes = row.original.notes
+
+      if (notes === '系統調整') {
+        return (
+          <>
+            <Wrench size={16} className='inline' /> {notes}
+          </>
+        )
+      } else {
+        return notes
+      }
+    },
   },
 ]
 
