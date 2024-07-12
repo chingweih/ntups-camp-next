@@ -9,13 +9,13 @@ export default function QrCodeScanner() {
   return (
     <Scanner
       onScan={(result) => {
-        console.log(result[0])
-        if (result[0].rawValue.startsWith('ntupscamp-transfer::')) {
+        if (!!result && result[0].rawValue.startsWith('ntupscamp-transfer::')) {
           router.push(`/bank/transfer/?to=${result[0].rawValue.split('::')[1]}`)
         }
       }}
       scanDelay={1500}
-      components={{ tracker: outline }}
+      components={{ tracker: outline, audio: false }}
+      constraints={{ facingMode: 'environment' }}
     />
   )
 }
