@@ -30,14 +30,19 @@ export async function GET(req: NextRequest) {
           .then(({ error }) => {
             if (error) {
               console.error(error)
+              return error
             }
           })
       })
     })
-    .then(() =>
-      NextResponse.json({
+    .then((error) => {
+      if (error) {
+        return new Response('Fail to update post order', { status: 500 })
+      }
+
+      return NextResponse.json({
         success: 'Post order reset.',
         timecode: new Date().toISOString(),
-      }),
-    )
+      })
+    })
 }
