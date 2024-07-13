@@ -1,5 +1,6 @@
 'use client'
 import { type User } from '@supabase/supabase-js'
+import { Textfit } from 'react-textfit'
 
 export default function UserGreeting({
   user,
@@ -30,11 +31,15 @@ export default function UserGreeting({
   }
 
   return (
-    <h1>
+    <h1 className='w-2/3'>
       {user?.email ? (
         <>
           <span className='whitespace-nowrap'>{greeting(hour)}，</span>
-          <span className='whitespace-nowrap'>{userName}</span>
+          {/* <span className='whitespace-nowrap'> */}
+          <Textfit mode='single' max={16}>
+            {userName}
+          </Textfit>
+          {/* </span> */}
         </>
       ) : (
         '請登入'

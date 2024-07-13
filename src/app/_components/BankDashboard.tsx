@@ -4,9 +4,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Activity, DollarSign } from 'lucide-react'
-import { currencyFormatter, currencyFormatterWithSign } from '@/lib/formatters'
+import {
+  currencyFormatter,
+  currencyFormatterCompactWithSign,
+} from '@/lib/formatters'
 import { getUser } from '@/utils/auth'
+import { Activity, DollarSign } from 'lucide-react'
 import {
   getTransactions,
   getUserBalance,
@@ -48,7 +51,7 @@ export async function BankDashboard() {
             style={{ fontSize: 'clamp(0.8rem, 5vw, 1.5rem)' }}
           >
             {transactions
-              ? currencyFormatterWithSign.format(transactions[0].amount)
+              ? currencyFormatterCompactWithSign.format(transactions[0].amount)
               : '--'}
           </CardTitle>
         </CardHeader>
