@@ -99,7 +99,11 @@ const columns: ColumnDef<FullUser>[] = [
       return (
         <>
           {user.userRole ? (
-            <Badge>
+            <Badge
+              variant={
+                user.userRole === userRoleMap.team ? 'default' : 'outline'
+              }
+            >
               {user.teamType}
               {user.userRole}
             </Badge>
