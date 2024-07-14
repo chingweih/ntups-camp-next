@@ -43,7 +43,7 @@ export default async function UploadPage() {
           <AccordionTrigger>上傳注意事項</AccordionTrigger>
           <AccordionContent>
             <ul className='list-disc pl-5'>
-              <li>僅接受 5MB 以下的 PDF 檔案</li>
+              <li>僅接受 10MB 以下的 PDF 檔案</li>
               <li>系統僅會採用最後一次上傳的版本</li>
               <li>上傳完成後，請自行下載檔案確認內容完整、版本正確</li>
               <li>截止時間後，將不再開放上傳功能</li>
