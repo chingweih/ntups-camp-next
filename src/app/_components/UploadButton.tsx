@@ -126,7 +126,7 @@ function UploadButton({
       <Input
         type='file'
         name='file'
-        accept='.pdf'
+        accept='.pdf,image/*'
         onChange={() => formRef.current?.requestSubmit()}
         style={{ display: 'none' }}
         ref={inputRef}
