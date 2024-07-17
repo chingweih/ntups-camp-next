@@ -7,6 +7,8 @@ import { colors } from '@/lib/custom-colors'
 import { cn } from '@/lib/utils'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
+import ReloadBtn from './_components/ReloadBtn'
+import { Separator } from '@/components/ui/separator'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -84,6 +86,15 @@ export default function RootLayout({
         {process.env.DEMO_MODE! === '1' ? 'DEMO MODE' : null}
         <div className='container flex items-start justify-center p-5 pt-3'>
           {children}
+        </div>
+        <div className='mx-auto mt-10 flex w-full max-w-md flex-col items-center justify-center gap-5 p-5'>
+          <Separator />
+          <div className='flex w-full flex-row items-center justify-between py-3'>
+            <span className='text-muted-foreground'>2024 臺大政治營</span>
+            <ReloadBtn>
+              <span className='text-muted-foreground underline'>重新整理</span>
+            </ReloadBtn>
+          </div>
         </div>
         <Toaster />
         <SpeedInsights />
