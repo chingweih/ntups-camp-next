@@ -9,7 +9,7 @@ export default function ReloadBtn({ children }: { children: React.ReactNode }) {
   return (
     <button
       onClick={() => {
-        router.refresh()
+        window.location.reload()
       }}
     >
       {children}
