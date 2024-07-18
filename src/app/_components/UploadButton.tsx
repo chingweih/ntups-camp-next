@@ -11,9 +11,14 @@ import { CheckCheck, Download } from 'lucide-react'
 import Link from 'next/link'
 import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import uploadFile from '../(user)/(main)/upload/action'
+import uploadFile, {
+  getUploadFileUrl,
+  insertUpload,
+} from '../(user)/(main)/upload/action'
 import SubmitBtn from './SubmitBtn'
 import { colors } from '@/lib/custom-colors'
+import { createClient } from '@/utils/supabase/client'
+import { createBrowserClient } from '@supabase/ssr'
 
 export default function UploadActions({
   taskId,
@@ -100,15 +105,42 @@ function UploadButton({
     <form
       ref={formRef}
       action={async (formData: FormData) => {
-        const { data, error } = await uploadFile(formData, taskId)
-        if (error) {
-          toast.error(error)
+        if (!inputRef.current?.files![0]) {
+          toast.error('請選擇檔案！')
+          return
         }
-        if (data) {
-          toast.success('上傳成功！')
-          setFileUrlState(data.file_url)
-          setCreatedAtState(data.created_at)
+
+        const uploadUrl = await getUploadFileUrl(taskId)
+
+        if (!uploadUrl) {
+          toast.error('上傳失敗！')
+          return
         }
+
+        const newFormData = new FormData()
+        newFormData.append('', inputRef.current.files[0] as Blob)
+
+        const respose = await fetch(uploadUrl.data, {
+          method: 'PUT',
+          body: newFormData as BodyInit,
+        })
+
+        if (respose.status !== 200) {
+          toast.error('上傳失敗！')
+          return
+        }
+
+        const { data, error } = await insertUpload(taskId, uploadUrl.path)
+
+        if (error || !data) {
+          toast.error('上傳失敗！')
+          return
+        }
+
+        toast.success('上傳成功！')
+        setFileUrlState(data[0].file_url)
+        setCreatedAtState(data[0].created_at)
+
         formRef.current?.reset()
       }}
     >
