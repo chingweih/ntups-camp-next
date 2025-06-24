@@ -1,4 +1,4 @@
-# NTU-PS-Camp App 2024
+# NTU-PS-Camp App 2025
 
 Using Next.js + Typescript Stack for the first time!
 

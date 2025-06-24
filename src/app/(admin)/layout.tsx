@@ -13,7 +13,7 @@ export default function MainLayout({
     <div className='flex w-full flex-col items-center justify-center'>
       <div className='mx-auto w-full max-w-md'>
         <div className='m-2 mt-1 flex flex-col items-center justify-center gap-2'>
-          <Image src={title} alt='憲政熱映中' height={50} priority={true} />
+          <Image src={title} alt='沙政風暴' height={50} priority={true} />
           <Badge>管理介面</Badge>
         </div>
         <Navigation />

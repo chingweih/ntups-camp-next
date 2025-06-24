@@ -1,9 +1,9 @@
 {
   "background_color": "#fffefc",
-  "description": "July 15-19｜2024 模擬選戰",
+  "description": "July 15-19｜2025 模擬選戰",
   "dir": "ltr",
   "display": "standalone",
-  "name": "憲政熱映中｜臺大政治營",
+  "name": "沙政風暴｜臺大政治營",
   "orientation": "any",
   "scope": "/",
   "short_name": "臺大政治營",
@@ -571,5 +571,5 @@
       "purpose": "maskable"
     }
   ],
-  "id": "ntupscamp.2024.ethan.huang"
+  "id": "ntupscamp.2025.ethan.huang"
 }

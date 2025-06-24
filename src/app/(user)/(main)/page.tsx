@@ -16,7 +16,7 @@ export default async function Home() {
     <main>
       <Image
         src={headerImg}
-        alt='2024 臺大政治營'
+        alt='2025 臺大政治營'
         className='rounded'
         priority={true}
       />

@@ -13,9 +13,9 @@ import { Separator } from '@/components/ui/separator'
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 const APP_NAME = '臺大政治營'
-const APP_DEFAULT_TITLE = '憲政熱映中｜臺大政治營'
-const APP_DESCRIPTION = 'July 15-19｜2024 模擬選戰'
-const APP_TITLE_TEMPLATE = '%s | 臺大政治營'
+const APP_DEFAULT_TITLE = '沙政風暴｜臺大政治營'
+const APP_DESCRIPTION = 'July 14-18｜2025 模擬選戰'
+const APP_TITLE_TEMPLATE = '%s｜臺大政治營'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ntupscamp.fun'),
@@ -90,7 +90,7 @@ export default function RootLayout({
         <div className='mx-auto mt-10 flex w-full max-w-md flex-col items-center justify-center gap-5 p-5'>
           <Separator />
           <div className='flex w-full flex-row items-center justify-between py-3'>
-            <span className='text-muted-foreground'>2024 臺大政治營</span>
+            <span className='text-muted-foreground'>2025 臺大政治營</span>
             <ReloadBtn>
               <span className='text-muted-foreground underline'>重新整理</span>
             </ReloadBtn>

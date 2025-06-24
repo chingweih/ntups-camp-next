@@ -9,8 +9,8 @@ export default function MainLayout({
 }) {
   return (
     <div className='mx-auto w-full max-w-md'>
-      <div className='flex flex-row items-center justify-center m-2 mt-1'>
-        <Image src={title} alt='憲政熱映中' height={50} priority={true} />
+      <div className='m-2 mt-1 flex flex-row items-center justify-center'>
+        <Image src={title} alt='沙政風暴' height={50} priority={true} />
       </div>
       <Navigation />
       {children}
