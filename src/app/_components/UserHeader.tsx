@@ -37,7 +37,9 @@ export default async function UserHeader() {
           ) : null}
           <Button variant='link' asChild>
             {user ? (
-              <Link href='/logout'>登出</Link>
+              <Link href='/logout' prefetch={false}>
+                登出
+              </Link>
             ) : (
               <Link href='/login'>登入</Link>
             )}
